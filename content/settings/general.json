@@ -1,0 +1,22 @@
+{
+  "profileImage": "https://i.pravatar.cc/150?img=11",
+  "siteName": "الاستشارات النفسية",
+  "siteDescription": "منصة ويب متطورة لتقديم الاستشارات النفسية والتوجيه الأسري بأسلوب علمي ومريح.",
+  "floatingButton": {
+    "iconType": "phone",
+    "linkOrPhone": "+1234567890",
+    "enabled": true
+  },
+  "socialLinks": [
+    {
+      "platformName": "Facebook",
+      "link": "https://facebook.com",
+      "icon": "facebook"
+    },
+    {
+      "platformName": "Twitter",
+      "link": "https://twitter.com",
+      "icon": "twitter"
+    }
+  ]
+}

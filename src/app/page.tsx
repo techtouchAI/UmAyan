@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
 
+
   return {
     title: settings.siteName,
     description: settings.siteDescription,

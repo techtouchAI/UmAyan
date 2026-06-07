@@ -14,6 +14,7 @@ export function Header({ settings }: HeaderProps) {
         <ThemeToggle />
       </div>
 
+
       <div className="w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-primary p-1">
         <div className="relative w-full h-full rounded-full overflow-hidden">
           <Image
@@ -26,6 +27,11 @@ export function Header({ settings }: HeaderProps) {
           />
         </div>
       </div>
+
+      <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+        {settings.siteName}
+      </h1>
+
 
       <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
         {settings.siteName}
