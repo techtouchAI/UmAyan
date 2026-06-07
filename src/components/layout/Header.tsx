@@ -32,11 +32,6 @@ export function Header({ settings }: HeaderProps) {
         {settings.siteName}
       </h1>
 
-
-      <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-        {settings.siteName}
-      </h1>
-
       <p className="text-slate-500 dark:text-slate-400 text-sm text-center max-w-md">
         {settings.siteDescription}
       </p>
