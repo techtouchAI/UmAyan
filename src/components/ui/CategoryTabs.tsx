@@ -1,5 +1,5 @@
 import React from 'react';
-import { Category } from '@/cms/schemas';
+import { Category } from '@/lib/types';
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
-import { SiteSettings } from '@/cms/schemas';
+import { SiteSettings } from '@/lib/types';
 
 interface FloatingButtonProps {
   settings: SiteSettings;

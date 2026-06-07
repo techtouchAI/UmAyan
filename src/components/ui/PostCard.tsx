@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Post } from '@/cms/schemas';
+import { Post } from '@/lib/types';
 
 interface PostCardProps {
   post: Post;

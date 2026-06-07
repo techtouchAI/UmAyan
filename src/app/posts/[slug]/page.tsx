@@ -2,13 +2,18 @@ import { getPostBySlug, getPosts } from "@/lib/api";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { ShareButtons } from "@/components/ui/ShareButtons";
+import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const posts = await getPosts();
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -17,30 +22,34 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const post = await getPostBySlug(resolvedParams.slug);
+  try {
+    const post = await getPostBySlug(resolvedParams.slug);
 
-  if (!post) {
+    if (!post) {
+      return {
+        title: "Post Not Found",
+      };
+    }
+
     return {
-      title: "Post Not Found",
-    };
-  }
-
-  return {
-    title: post.seoMetaTitle,
-    description: post.seoMetaDescription,
-    openGraph: {
       title: post.seoMetaTitle,
       description: post.seoMetaDescription,
-      images: [
-        {
-          url: post.portraitImage,
-          width: 400,
-          height: 500,
-          alt: post.title,
-        },
-      ],
-    },
-  };
+      openGraph: {
+        title: post.seoMetaTitle,
+        description: post.seoMetaDescription,
+        images: [
+          {
+            url: post.portraitImage,
+            width: 400,
+            height: 500,
+            alt: post.title,
+          },
+        ],
+      },
+    };
+  } catch {
+    return { title: "Post Not Found" };
+  }
 }
 
 export default async function PostPage({
@@ -49,15 +58,18 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-  const post = await getPostBySlug(resolvedParams.slug);
+
+  let post;
+  try {
+    post = await getPostBySlug(resolvedParams.slug);
+  } catch {
+    post = undefined;
+  }
 
   if (!post) {
     notFound();
   }
 
-  // Next.js components don't have access to the absolute URL in server components without headers()
-  // We'll pass a relative path or construct a placeholder that client components might use if necessary,
-  // but for actual sharing, we might want a full URL. We'll use a placeholder domain for this demo.
   const siteUrl = "https://example.com";
   const postUrl = `${siteUrl}/posts/${post.slug}`;
 
@@ -78,10 +90,9 @@ export default async function PostPage({
         />
       </div>
 
-      <div
-        className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-lg leading-relaxed mb-10"
-        dangerouslySetInnerHTML={{ __html: post.bodyContent }}
-      />
+      <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-lg leading-relaxed mb-10">
+        <PortableText value={post.bodyContent} />
+      </div>
 
       {post.conclusion && (
         <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-lg border border-slate-100 dark:border-slate-800 mb-10">
