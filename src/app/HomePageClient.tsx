@@ -89,4 +89,3 @@ export function HomePageClient({ categories, initialPosts }: HomePageClientProps
     </div>
   );
 }
-}
