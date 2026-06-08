@@ -30,17 +30,17 @@ export function Header({ settings }: HeaderProps) {
 
       {/* Profile Info Container */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex flex-col sm:flex-row items-center sm:items-end pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end pb-6">
           {/* Profile Image (Overlapping, on the right in RTL) */}
-          <div className="-mt-16 sm:-mt-20 relative z-10 sm:ml-6 mb-4 sm:mb-0">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md">
+          <div className="-mt-12 sm:-mt-20 relative z-10 ml-0 sm:ml-6 mb-3 sm:mb-0">
+            <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {settings.profileImage && (
                   <Image
                     src={settings.profileImage}
                     alt={settings.siteName || "الصورة الشخصية"}
                     fill
-                    sizes="(max-width: 640px) 96px, 128px"
+                    sizes="(max-width: 640px) 80px, 128px"
                     className="object-cover"
                     priority
                   />
@@ -50,11 +50,11 @@ export function Header({ settings }: HeaderProps) {
           </div>
 
           {/* Text Content */}
-          <div className="text-center sm:text-right flex-1 pt-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+          <div className="text-start flex-1 pt-1 sm:pt-2">
+            <h1 className="text-xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-1 sm:mb-2">
               {settings.siteName}
             </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto sm:mx-0">
+            <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-2xl">
               {settings.siteDescription}
             </p>
           </div>
