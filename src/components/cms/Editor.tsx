@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import type { CMSPost } from "@/lib/github";
 import { uploadGithubFile, fetchGithubSettings } from "@/lib/github";
 import type { PostLink } from "@/lib/types";
+import imageCompression from "browser-image-compression";
 
 interface EditorProps {
   initialPost: CMSPost;
@@ -65,14 +66,22 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
     const toastId = toast.loading("جاري رفع الصورة...");
 
     try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+        fileType: "image/webp"
+      };
+      const compressedFile = await imageCompression(file, options);
+
       const base64Data = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(compressedFile);
         reader.onload = () => resolve((reader.result as string).split(',')[1]);
         reader.onerror = error => reject(error);
       });
 
-      const fileName = `post-${Date.now()}.${file.name.split('.').pop()}`;
+      const fileName = `post-${Date.now()}.webp`;
       const path = `public/uploads/${fileName}`;
 
       const url = await uploadGithubFile(
