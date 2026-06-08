@@ -2,36 +2,51 @@ import { SiteSettings, Category, Post } from './types';
 import fs from 'fs';
 import path from 'path';
 
-const mockSiteSettings: SiteSettings = {
-  profileImage: "https://i.pravatar.cc/150?img=11",
+const postsDirectory = path.join(process.cwd(), 'content/posts');
+const settingsFile = path.join(process.cwd(), 'content/settings.json');
+
+const defaultSettings: SiteSettings = {
+  profileImage: "",
   siteName: "الاستشارات النفسية",
   siteDescription: "منصة ويب متطورة لتقديم الاستشارات النفسية والتوجيه الأسري بأسلوب علمي ومريح.",
   floatingButton: {
-    iconType: "phone",
-    linkOrPhone: "+1234567890",
-    enabled: true,
+    iconType: "whatsapp",
+    linkOrPhone: "",
+    enabled: false,
   },
-  socialLinks: [
-    { platformName: "Facebook", link: "https://facebook.com", icon: "facebook" },
-    { platformName: "Twitter", link: "https://twitter.com", icon: "twitter" },
-  ],
+  socialLinks: [],
 };
 
-const mockCategories: Category[] = [
-  { title: "الكل", slug: "all" },
-  { title: "قلق", slug: "anxiety" },
-  { title: "استشارات أسرية", slug: "family" },
-  { title: "اكتئاب", slug: "depression" },
-];
-
-const postsDirectory = path.join(process.cwd(), 'content/posts');
-
 export async function getSiteSettings(): Promise<SiteSettings> {
-  return mockSiteSettings;
+  try {
+    if (fs.existsSync(settingsFile)) {
+      const fileContents = fs.readFileSync(settingsFile, 'utf8');
+      const settings = JSON.parse(fileContents);
+      return {
+        ...defaultSettings,
+        ...settings,
+        floatingButton: {
+          ...defaultSettings.floatingButton,
+          ...(settings.floatingButton || {})
+        },
+        socialLinks: settings.socialLinks || []
+      };
+    }
+  } catch (error) {
+    console.error("Error reading settings.json:", error);
+  }
+  return defaultSettings;
 }
 
 export async function getCategories(): Promise<Category[]> {
-  return mockCategories;
+  const settings = await getSiteSettings();
+  const cats = settings.categories || ["استشارات أسرية", "قلق", "اكتئاب", "تطوير الذات"];
+
+  // Format to match the Category interface required by the frontend
+  return [
+    { title: "الكل", slug: "all" },
+    ...cats.map(cat => ({ title: cat, slug: encodeURIComponent(cat).toLowerCase() }))
+  ];
 }
 
 export async function getPosts(): Promise<Post[]> {

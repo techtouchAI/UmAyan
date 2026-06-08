@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import type { CMSPost } from "@/lib/github";
 import { uploadGithubFile, fetchGithubSettings } from "@/lib/github";
 import type { PostLink } from "@/lib/types";
@@ -56,33 +57,40 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !token) {
-        if (!token) alert("تحتاج إلى تسجيل الدخول أولاً لرفع الصور.");
+        if (!token) toast.error("تحتاج إلى تسجيل الدخول أولاً لرفع الصور.");
         return;
     }
 
     setIsUploading(true);
+    const toastId = toast.loading("جاري رفع الصورة...");
+
     try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        const base64Data = (reader.result as string).split(',')[1];
-        const fileName = `post-${Date.now()}.${file.name.split('.').pop()}`;
-        const path = `public/uploads/${fileName}`;
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve((reader.result as string).split(',')[1]);
+        reader.onerror = error => reject(error);
+      });
 
-        const url = await uploadGithubFile(
-          token,
-          path,
-          base64Data,
-          `CMS: Upload post image ${fileName}`
-        );
+      const fileName = `post-${Date.now()}.${file.name.split('.').pop()}`;
+      const path = `public/uploads/${fileName}`;
 
-        setPost(prev => ({ ...prev, portraitImage: url }));
-      };
+      const url = await uploadGithubFile(
+        token,
+        path,
+        base64Data,
+        `CMS: Upload post image ${fileName}`
+      );
+
+      setPost(prev => ({ ...prev, portraitImage: url }));
+      toast.success("تم رفع الصورة بنجاح!", { id: toastId });
     } catch (error) {
       console.error(error);
-      alert("فشل في رفع الصورة");
+      toast.error("فشل في رفع الصورة", { id: toastId });
     } finally {
       setIsUploading(false);
+      // Reset input so the same file can be selected again if needed
+      e.target.value = '';
     }
   };
 
