@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { uploadGithubFile } from "@/lib/github";
 import type { SiteSettings } from "@/lib/types";
 
@@ -30,7 +31,16 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
 
   useEffect(() => {
     if (initialSettings) {
-      setSettings(initialSettings);
+      // Deep merge to ensure nested objects like floatingButton and socialLinks exist
+      setSettings({
+        ...defaultSettings,
+        ...initialSettings,
+        floatingButton: {
+          ...defaultSettings.floatingButton,
+          ...(initialSettings.floatingButton || {})
+        },
+        socialLinks: initialSettings.socialLinks || defaultSettings.socialLinks
+      });
     }
   }, [initialSettings]);
 
@@ -41,32 +51,38 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
     if (type === "cover") setIsUploadingCover(true);
     else setIsUploadingProfile(true);
 
+    const toastId = toast.loading("جاري رفع الصورة...");
+
     try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        const base64Data = (reader.result as string).split(',')[1];
-        const fileName = `${type}-${Date.now()}.${file.name.split('.').pop()}`;
-        const path = `public/uploads/${fileName}`; // Keep images in public/uploads for direct access if possible or github relative
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve((reader.result as string).split(',')[1]);
+        reader.onerror = error => reject(error);
+      });
 
-        const url = await uploadGithubFile(
-          token,
-          path,
-          base64Data,
-          `CMS: Upload ${type} image`
-        );
+      const fileName = `${type}-${Date.now()}.${file.name.split('.').pop()}`;
+      const path = `public/uploads/${fileName}`;
 
-        setSettings(prev => ({
-          ...prev,
-          [type === "cover" ? "coverImage" : "profileImage"]: url
-        }));
-      };
+      const url = await uploadGithubFile(
+        token,
+        path,
+        base64Data,
+        `CMS: Upload ${type} image`
+      );
+
+      setSettings(prev => ({
+        ...prev,
+        [type === "cover" ? "coverImage" : "profileImage"]: url
+      }));
+      toast.success("تم رفع الصورة بنجاح!", { id: toastId });
     } catch (error) {
       console.error(error);
-      alert("فشل في رفع الصورة");
+      toast.error("فشل في رفع الصورة", { id: toastId });
     } finally {
       if (type === "cover") setIsUploadingCover(false);
       else setIsUploadingProfile(false);
+      e.target.value = '';
     }
   };
 
