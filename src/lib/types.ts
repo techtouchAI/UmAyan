@@ -1,5 +1,3 @@
-import type { PortableTextBlock } from '@portabletext/types';
-
 export interface SiteSettings {
   profileImage: string;
   siteName: string;
@@ -26,7 +24,7 @@ export interface Post {
   title: string;
   slug: string;
   category: string;
-  bodyContent: PortableTextBlock | PortableTextBlock[];
+  bodyContent: string;
   conclusion: string;
   seoMetaTitle: string;
   seoMetaDescription: string;

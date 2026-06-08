@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdn.sanity.io',
+        hostname: 'avatars.githubusercontent.com',
       },
     ],
   },
