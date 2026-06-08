@@ -86,7 +86,8 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
       toast.success("تم رفع الصورة بنجاح!", { id: toastId });
     } catch (error) {
       console.error(error);
-      toast.error("فشل في رفع الصورة", { id: toastId });
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      toast.error(`فشل في رفع الصورة: ${errorMessage}`, { id: toastId });
     } finally {
       setIsUploading(false);
       // Reset input so the same file can be selected again if needed
