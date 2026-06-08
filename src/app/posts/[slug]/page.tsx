@@ -102,6 +102,26 @@ export default async function PostPage({
         </div>
       )}
 
+      {post.links && post.links.length > 0 && (
+        <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-lg border border-slate-100 dark:border-slate-800 mb-10 space-y-4">
+          <h3 className="text-xl font-bold mb-4">روابط ذات صلة</h3>
+          <ul className="space-y-2">
+            {post.links.map((link, index) => (
+              <li key={index}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:text-primary/80 font-medium underline transition-colors"
+                >
+                  {link.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <ShareButtons title={post.title} url={postUrl} />
     </article>
   );
