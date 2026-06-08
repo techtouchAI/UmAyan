@@ -2,8 +2,8 @@ import { getPostBySlug, getPosts } from "@/lib/api";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { ShareButtons } from "@/components/ui/ShareButtons";
-import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
+import ReactMarkdown from "react-markdown";
 
 export async function generateStaticParams() {
   try {
@@ -91,7 +91,7 @@ export default async function PostPage({
       </div>
 
       <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-lg leading-relaxed mb-10">
-        <PortableText value={post.bodyContent} />
+        <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
       </div>
 
       {post.conclusion && (
