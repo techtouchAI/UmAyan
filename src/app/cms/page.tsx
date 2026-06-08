@@ -2,21 +2,25 @@
 
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { fetchGithubPosts, saveGithubPost, deleteGithubPost } from "@/lib/github";
+import { fetchGithubPosts, saveGithubPost, deleteGithubPost, fetchGithubSettings, saveGithubSettings } from "@/lib/github";
 import type { CMSPost } from "@/lib/github";
+import type { SiteSettings } from "@/lib/types";
 import Login from "@/components/cms/Login";
 import Dashboard from "@/components/cms/Dashboard";
 import Editor from "@/components/cms/Editor";
+import SettingsEditor from "@/components/cms/SettingsEditor";
 
 export default function CMSPage() {
   const [token, setToken] = useState<string | null>(null);
   const [posts, setPosts] = useState<CMSPost[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [settingsData, setSettingsData] = useState<{ settings: SiteSettings; sha: string } | null>(null);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+  const [isLoadingSettings, setIsLoadingSettings] = useState(false);
   const [editingPost, setEditingPost] = useState<CMSPost | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSavingPost, setIsSavingPost] = useState(false);
+  const [activeTab, setActiveTab] = useState<"posts" | "settings">("posts");
 
   useEffect(() => {
-    // Only set it on mount if not already set, avoiding direct sync triggers
     const savedToken = sessionStorage.getItem("github_token");
     if (savedToken && !token) {
       setTimeout(() => setToken(savedToken), 0);
@@ -24,26 +28,37 @@ export default function CMSPage() {
   }, [token]);
 
   const loadPosts = async (authToken: string) => {
-    setIsLoading(true);
+    setIsLoadingPosts(true);
     try {
       const data = await fetchGithubPosts(authToken);
       setPosts(data);
     } catch (error: unknown) {
       console.error(error);
-      if (error instanceof Error) {
-        toast.error(error.message || "Failed to load posts");
-      } else {
-        toast.error("Failed to load posts");
-      }
+      toast.error("فشل في تحميل المنشورات");
     } finally {
-      setIsLoading(false);
+      setIsLoadingPosts(false);
+    }
+  };
+
+  const loadSettings = async (authToken: string) => {
+    setIsLoadingSettings(true);
+    try {
+      const data = await fetchGithubSettings(authToken);
+      if (data) setSettingsData(data);
+    } catch (error: unknown) {
+      console.error(error);
+      toast.error("فشل في تحميل الإعدادات");
+    } finally {
+      setIsLoadingSettings(false);
     }
   };
 
   useEffect(() => {
     if (token) {
-      // Defer execution slightly to avoid synchronous setState trigger warning
-      const timeoutId = setTimeout(() => loadPosts(token), 0);
+      const timeoutId = setTimeout(() => {
+        loadPosts(token);
+        loadSettings(token);
+      }, 0);
       return () => clearTimeout(timeoutId);
     }
   }, [token]);
@@ -51,104 +66,146 @@ export default function CMSPage() {
   const handleLogin = (newToken: string) => {
     sessionStorage.setItem("github_token", newToken);
     setToken(newToken);
-    toast.success("Token saved successfully");
+    toast.success("تم تسجيل الدخول بنجاح");
   };
 
   const handleLogout = () => {
     sessionStorage.removeItem("github_token");
     setToken(null);
     setPosts([]);
+    setSettingsData(null);
     setEditingPost(null);
-    toast.success("Logged out");
+    toast.success("تم تسجيل الخروج");
   };
 
   const handleSavePost = async (post: CMSPost) => {
     if (!token) return;
 
-    setIsSaving(true);
+    setIsSavingPost(true);
     try {
       await saveGithubPost(token, post);
-      toast.success("Post saved successfully!");
+      toast.success("تم حفظ المنشور بنجاح!");
       setEditingPost(null);
       loadPosts(token);
     } catch (error: unknown) {
       console.error(error);
-      if (error instanceof Error) {
-        toast.error(error.message || "Failed to save post");
-      } else {
-        toast.error("Failed to save post");
-      }
+      toast.error("فشل في حفظ المنشور");
     } finally {
-      setIsSaving(false);
+      setIsSavingPost(false);
     }
   };
 
   const handleDeletePost = async (post: CMSPost) => {
     if (!token) return;
-    if (!window.confirm(`Are you sure you want to delete ${post.title}?`)) return;
+    if (!window.confirm(`هل أنت متأكد من حذف ${post.title}؟`)) return;
 
     try {
       await deleteGithubPost(token, post);
-      toast.success("Post deleted successfully!");
+      toast.success("تم حذف المنشور بنجاح!");
       loadPosts(token);
     } catch (error: unknown) {
       console.error(error);
-      if (error instanceof Error) {
-        toast.error(error.message || "Failed to delete post");
-      } else {
-        toast.error("Failed to delete post");
-      }
+      toast.error("فشل في حذف المنشور");
+    }
+  };
+
+  const handleSaveSettings = async (newSettings: SiteSettings) => {
+    if (!token) return;
+    try {
+      await saveGithubSettings(token, newSettings, settingsData?.sha);
+      toast.success("تم حفظ الإعدادات بنجاح!");
+      loadSettings(token); // Reload to get new SHA
+    } catch (error: unknown) {
+      console.error(error);
+      toast.error("فشل في حفظ الإعدادات");
     }
   };
 
   if (!token) {
     return (
       <>
-        <Toaster />
+        <Toaster position="top-center" reverseOrder={false} />
         <Login onLogin={handleLogin} />
       </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white">
-      <Toaster />
-      <header className="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white" dir="rtl">
+      <Toaster position="top-center" reverseOrder={false} />
+      <header className="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold">Custom CMS</h1>
+          <div className="flex items-center gap-6">
+            <h1 className="text-xl font-bold text-primary">لوحة التحكم</h1>
+            <nav className="hidden sm:flex gap-4">
+              <button
+                onClick={() => { setActiveTab("posts"); setEditingPost(null); }}
+                className={`text-sm font-medium px-3 py-1.5 rounded-md transition-colors ${
+                  activeTab === "posts"
+                    ? "bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                }`}
+              >
+                المنشورات
+              </button>
+              <button
+                onClick={() => { setActiveTab("settings"); setEditingPost(null); }}
+                className={`text-sm font-medium px-3 py-1.5 rounded-md transition-colors ${
+                  activeTab === "settings"
+                    ? "bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                }`}
+              >
+                الإعدادات
+              </button>
+            </nav>
+          </div>
           <button
             onClick={handleLogout}
-            className="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+            className="text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors"
           >
-            Logout
+            تسجيل الخروج
           </button>
         </div>
       </header>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {editingPost ? (
-          <Editor
-            initialPost={editingPost}
-            onSave={handleSavePost}
-            onCancel={() => setEditingPost(null)}
-            isSaving={isSaving}
-          />
+        {activeTab === "posts" ? (
+          editingPost ? (
+            <Editor
+              initialPost={editingPost}
+              onSave={handleSavePost}
+              onCancel={() => setEditingPost(null)}
+              isSaving={isSavingPost}
+              token={token}
+            />
+          ) : (
+            <Dashboard
+              posts={posts}
+              isLoading={isLoadingPosts}
+              onCreateNew={() => setEditingPost({
+                title: "",
+                slug: "",
+                portraitImage: "",
+                category: "",
+                bodyContent: "",
+                conclusion: "",
+                seoMetaTitle: "",
+                seoMetaDescription: "",
+              })}
+              onEdit={setEditingPost}
+              onDelete={handleDeletePost}
+            />
+          )
         ) : (
-          <Dashboard
-            posts={posts}
-            isLoading={isLoading}
-            onCreateNew={() => setEditingPost({
-              title: "",
-              slug: "",
-              portraitImage: "",
-              category: "",
-              bodyContent: "",
-              conclusion: "",
-              seoMetaTitle: "",
-              seoMetaDescription: "",
-            })}
-            onEdit={setEditingPost}
-            onDelete={handleDeletePost}
-          />
+          isLoadingSettings ? (
+            <div className="text-center py-12">جاري تحميل الإعدادات...</div>
+          ) : (
+            <SettingsEditor
+              initialSettings={settingsData?.settings || null}
+              onSave={handleSaveSettings}
+              token={token}
+            />
+          )
         )}
       </main>
     </div>

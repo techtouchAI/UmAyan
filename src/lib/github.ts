@@ -1,4 +1,4 @@
-import type { Post } from "./types";
+import type { Post, SiteSettings } from "./types";
 
 export interface GitHubFile {
   name: string;
@@ -142,4 +142,110 @@ export async function deleteGithubPost(token: string, post: CMSPost): Promise<vo
   if (!response.ok) {
     throw new Error("Failed to delete post");
   }
+}
+
+export async function fetchGithubSettings(token: string): Promise<{ settings: SiteSettings; sha: string } | null> {
+  const path = "content/settings.json";
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`;
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: "application/vnd.github.v3+json",
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      return null;
+    }
+    throw new Error("Failed to fetch settings");
+  }
+
+  const file: GitHubFile = await response.json();
+  const fileRes = await fetch(file.download_url);
+  if (!fileRes.ok) throw new Error("Failed to download settings content");
+
+  const settings: SiteSettings = await fileRes.json();
+  return { settings, sha: file.sha };
+}
+
+export async function saveGithubSettings(token: string, settings: SiteSettings, sha?: string): Promise<void> {
+  const path = "content/settings.json";
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`;
+
+  const contentStr = JSON.stringify(settings, null, 2);
+  const contentBase64 = encodeBase64Unicode(contentStr);
+
+  const body: { message: string; content: string; branch: string; sha?: string } = {
+    message: "CMS: Update site settings",
+    content: contentBase64,
+    branch: "main",
+  };
+
+  if (sha) {
+    body.sha = sha;
+  }
+
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to save settings");
+  }
+}
+
+export async function uploadGithubFile(token: string, path: string, base64Content: string, message: string): Promise<string> {
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`;
+
+  let sha;
+  try {
+    const existingRes = await fetch(url, {
+      headers: {
+        Authorization: `token ${token}`,
+        Accept: "application/vnd.github.v3+json",
+      },
+    });
+    if (existingRes.ok) {
+      const existingData = await existingRes.json();
+      sha = existingData.sha;
+    }
+  } catch (e) {
+    // Ignore error, file might not exist
+  }
+
+  const body: { message: string; content: string; branch: string; sha?: string } = {
+    message,
+    content: base64Content,
+    branch: "main",
+  };
+
+  if (sha) {
+    body.sha = sha;
+  }
+
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(`Failed to upload file: ${errorData.message || response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.content.download_url; // Return the download_url directly
 }
