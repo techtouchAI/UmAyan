@@ -98,7 +98,7 @@ export async function saveGithubPost(token: string, post: CMSPost): Promise<void
   const body: { message: string; content: string; branch: string; sha?: string } = {
     message: `CMS: ${post.sha ? "Update" : "Create"} post ${post.title}`,
     content: contentBase64,
-    branch: "main",
+    branch: "Main",
   };
 
   if (post.sha) {
@@ -141,7 +141,7 @@ export async function deleteGithubPost(token: string, post: CMSPost): Promise<vo
     body: JSON.stringify({
       message: `CMS: Delete post ${post.title}`,
       sha: post.sha,
-      branch: "main",
+      branch: "Main",
     }),
   });
 
@@ -192,7 +192,7 @@ export async function saveGithubSettings(token: string, settings: SiteSettings, 
   const body: { message: string; content: string; branch: string; sha?: string } = {
     message: "CMS: Update site settings",
     content: contentBase64,
-    branch: "main",
+    branch: "Main",
   };
 
   if (sha) {
@@ -239,7 +239,7 @@ export async function uploadGithubFile(token: string, path: string, base64Conten
   const body: { message: string; content: string; branch: string; sha?: string } = {
     message,
     content: base64Content,
-    branch: "main",
+    branch: "Main",
   };
 
   if (sha) {
