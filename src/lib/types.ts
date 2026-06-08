@@ -1,7 +1,9 @@
 export interface SiteSettings {
+  coverImage?: string;
   profileImage: string;
   siteName: string;
   siteDescription: string;
+  categories?: string[];
   floatingButton: {
     iconType: string;
     linkOrPhone: string;
@@ -19,6 +21,11 @@ export interface Category {
   slug: string;
 }
 
+export interface PostLink {
+  title: string;
+  url: string;
+}
+
 export interface Post {
   portraitImage: string;
   title: string;
@@ -28,4 +35,5 @@ export interface Post {
   conclusion: string;
   seoMetaTitle: string;
   seoMetaDescription: string;
+  links?: PostLink[];
 }
