@@ -14,11 +14,11 @@ interface DashboardProps {
 export default function Dashboard({ posts, isLoading, onCreateNew, onEdit, onDelete }: DashboardProps) {
   return (
     <div dir="rtl">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-6">
         <h2 className="text-2xl font-bold">إدارة المنشورات</h2>
         <button
           onClick={onCreateNew}
-          className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-medium py-3 sm:py-2 px-4 rounded-lg transition-colors text-center"
         >
           إضافة منشور جديد
         </button>
@@ -46,13 +46,13 @@ export default function Dashboard({ posts, isLoading, onCreateNew, onEdit, onDel
               <div className="flex justify-end gap-3 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
                 <button
                   onClick={() => onEdit(post)}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                  className="flex-1 sm:flex-none text-center sm:text-right py-2 sm:py-0 text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-100 dark:border-blue-900/30 sm:border-transparent rounded sm:rounded-none bg-blue-50 dark:bg-blue-900/10 sm:bg-transparent"
                 >
                   تعديل
                 </button>
                 <button
                   onClick={() => onDelete(post)}
-                  className="text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                  className="flex-1 sm:flex-none text-center sm:text-right py-2 sm:py-0 text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 border border-red-100 dark:border-red-900/30 sm:border-transparent rounded sm:rounded-none bg-red-50 dark:bg-red-900/10 sm:bg-transparent"
                 >
                   حذف
                 </button>

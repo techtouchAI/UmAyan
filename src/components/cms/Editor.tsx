@@ -117,12 +117,39 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
     }
   };
 
-  const confirmNewCategory = () => {
-    if (newCategory.trim()) {
-      setExistingCategories([...existingCategories, newCategory.trim()]);
-      setPost({ ...post, category: newCategory.trim() });
+  const confirmNewCategory = async () => {
+    const trimmed = newCategory.trim();
+    if (trimmed) {
+      const updatedCategories = [...existingCategories, trimmed];
+      setExistingCategories(updatedCategories);
+      setPost({ ...post, category: trimmed });
       setNewCategory("");
       setIsAddingNewCategory(false);
+
+      if (token) {
+        try {
+          const data = await fetchGithubSettings(token);
+          if (data) {
+            const currentSettings = data.settings;
+            // Prevent duplicates
+            const currentCats = currentSettings.categories || [];
+            if (!currentCats.includes(trimmed)) {
+                await uploadGithubFile(
+                  token,
+                  "content/settings.json",
+                  btoa(encodeURIComponent(JSON.stringify({
+                      ...currentSettings,
+                      categories: [...currentCats, trimmed]
+                  }, null, 2)).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode(parseInt(p1, 16)))),
+                  `CMS: Added new category '${trimmed}'`
+                );
+            }
+          }
+        } catch (e) {
+          console.error("Failed to save new category globally", e);
+          // Non-blocking: we still updated the local state for this post
+        }
+      }
     }
   };
 
@@ -143,7 +170,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
 
           <div className="md:col-span-2 space-y-2">
              <label className="block text-sm font-medium">صورة المنشور</label>
-             <div className="flex gap-2">
+             <div className="flex flex-col sm:flex-row gap-2">
                 <input
                     required
                     type="url"
@@ -152,7 +179,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                     className="flex-1 px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
                     placeholder="رابط الصورة أو ارفع صورة جديدة"
                 />
-                <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 flex items-center justify-center min-w-[120px] transition-colors">
+                <label className="cursor-pointer w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 flex items-center justify-center min-w-[120px] transition-colors">
                     {isUploading ? "جاري الرفع..." : "رفع صورة"}
                     <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={isUploading || !token} />
                 </label>
@@ -205,7 +232,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                   <option value="ADD_NEW" className="font-bold text-primary">+ إضافة فئة جديدة</option>
                 </select>
             ) : (
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                     <input
                         type="text"
                         value={newCategory}
@@ -214,8 +241,10 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                         className="flex-1 px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
                         autoFocus
                     />
-                    <button type="button" onClick={confirmNewCategory} className="bg-primary text-white px-4 py-2 rounded-lg">تأكيد</button>
-                    <button type="button" onClick={() => setIsAddingNewCategory(false)} className="bg-slate-200 dark:bg-slate-700 px-4 py-2 rounded-lg">إلغاء</button>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <button type="button" onClick={confirmNewCategory} className="flex-1 sm:flex-none bg-primary text-white px-4 py-2 rounded-lg">تأكيد</button>
+                      <button type="button" onClick={() => setIsAddingNewCategory(false)} className="flex-1 sm:flex-none bg-slate-200 dark:bg-slate-700 px-4 py-2 rounded-lg">إلغاء</button>
+                    </div>
                 </div>
             )}
           </div>
@@ -244,20 +273,20 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
 
           {/* مدير الروابط المتعددة */}
           <div className="md:col-span-2 space-y-4 border-t border-slate-200 dark:border-slate-700 pt-6 mt-2">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
               <label className="block text-sm font-bold">الروابط المرفقة للمنشور (Dynamic Links)</label>
               <button
                 type="button"
                 onClick={addLink}
-                className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-sm font-medium py-1 px-3 rounded transition-colors"
+                className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-sm font-medium py-2 sm:py-1 px-3 rounded transition-colors"
               >
                 + إضافة رابط جديد
               </button>
             </div>
 
             {(post.links || []).map((link, index) => (
-              <div key={index} className="flex gap-2 items-start bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 relative">
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                   <div>
                     <label className="block text-xs font-medium mb-1 text-slate-500">عنوان الرابط (النص الظاهر)</label>
                     <input
@@ -285,10 +314,10 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                 <button
                   type="button"
                   onClick={() => removeLink(index)}
-                  className="text-red-500 hover:text-red-700 p-2 mt-5"
+                  className="w-full sm:w-auto text-red-500 hover:text-red-700 sm:p-2 sm:mt-5 text-sm sm:text-base border border-red-200 dark:border-red-900 sm:border-none rounded py-2 sm:py-0 bg-red-50 dark:bg-red-900/20 sm:bg-transparent"
                   title="حذف الرابط"
                 >
-                  ✕
+                  حذف
                 </button>
               </div>
             ))}
@@ -325,7 +354,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
           <button
             type="submit"
             disabled={isSaving}
-            className="bg-primary hover:bg-primary/90 text-white font-medium py-2.5 px-8 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-medium py-3 sm:py-2.5 px-8 rounded-lg transition-colors disabled:opacity-50 text-lg sm:text-base"
           >
             {isSaving ? "جاري الحفظ..." : "حفظ المنشور"}
           </button>

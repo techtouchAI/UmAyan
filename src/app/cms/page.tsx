@@ -134,13 +134,21 @@ export default function CMSPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white" dir="rtl">
       <Toaster position="top-center" reverseOrder={false} />
       <header className="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <h1 className="text-xl font-bold text-primary">لوحة التحكم</h1>
-            <nav className="hidden sm:flex gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto">
+            <div className="flex justify-between items-center w-full sm:w-auto">
+              <h1 className="text-xl font-bold text-primary">لوحة التحكم</h1>
+              <button
+                onClick={handleLogout}
+                className="sm:hidden text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+              >
+                تسجيل الخروج
+              </button>
+            </div>
+            <nav className="flex gap-2 sm:gap-4 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 scrollbar-hide">
               <button
                 onClick={() => { setActiveTab("posts"); setEditingPost(null); }}
-                className={`text-sm font-medium px-3 py-1.5 rounded-md transition-colors ${
+                className={`text-sm font-medium px-4 py-2 rounded-md transition-colors whitespace-nowrap flex-1 sm:flex-none ${
                   activeTab === "posts"
                     ? "bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white"
                     : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
@@ -150,7 +158,7 @@ export default function CMSPage() {
               </button>
               <button
                 onClick={() => { setActiveTab("settings"); setEditingPost(null); }}
-                className={`text-sm font-medium px-3 py-1.5 rounded-md transition-colors ${
+                className={`text-sm font-medium px-4 py-2 rounded-md transition-colors whitespace-nowrap flex-1 sm:flex-none ${
                   activeTab === "settings"
                     ? "bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white"
                     : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
@@ -162,7 +170,7 @@ export default function CMSPage() {
           </div>
           <button
             onClick={handleLogout}
-            className="text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+            className="hidden sm:block text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors whitespace-nowrap"
           >
             تسجيل الخروج
           </button>

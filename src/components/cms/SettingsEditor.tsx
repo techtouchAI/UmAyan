@@ -111,7 +111,7 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium mb-1">صورة الغلاف (Cover Image)</label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 type="text"
                 value={settings.coverImage || ""}
@@ -119,7 +119,7 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
                 className="flex-1 px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="رابط صورة الغلاف أو ارفع صورة"
               />
-              <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-4 py-2 rounded border border-slate-300 dark:border-slate-600 flex items-center justify-center min-w-[100px]">
+              <label className="cursor-pointer w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-4 py-2 rounded border border-slate-300 dark:border-slate-600 flex items-center justify-center min-w-[100px]">
                 {isUploadingCover ? "جاري الرفع..." : "رفع صورة"}
                 <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "cover")} disabled={isUploadingCover} />
               </label>
@@ -131,7 +131,7 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
 
           <div>
             <label className="block text-sm font-medium mb-1">الصورة الشخصية (Profile Image)</label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 type="text"
                 value={settings.profileImage}
@@ -140,7 +140,7 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
                 placeholder="رابط الصورة الشخصية أو ارفع صورة"
                 required
               />
-              <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-4 py-2 rounded border border-slate-300 dark:border-slate-600 flex items-center justify-center min-w-[100px]">
+              <label className="cursor-pointer w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-4 py-2 rounded border border-slate-300 dark:border-slate-600 flex items-center justify-center min-w-[100px]">
                 {isUploadingProfile ? "جاري الرفع..." : "رفع صورة"}
                 <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "profile")} disabled={isUploadingProfile} />
               </label>
@@ -236,21 +236,21 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
 
       {/* الروابط الاجتماعية */}
       <div className="space-y-4 pb-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
           <h3 className="text-xl font-semibold">روابط التواصل الاجتماعي (Footer)</h3>
           <button
             type="button"
             onClick={addSocialLink}
-            className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-sm font-medium py-1 px-3 rounded transition-colors"
+            className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-sm font-medium py-2 sm:py-1 px-3 rounded transition-colors"
           >
             + إضافة رابط جديد
           </button>
         </div>
 
         {settings.socialLinks.map((link, index) => (
-          <div key={index} className="flex gap-2 items-start bg-slate-50 dark:bg-slate-800/50 p-4 rounded border border-slate-200 dark:border-slate-700">
-            <div className="flex-1 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center bg-slate-50 dark:bg-slate-800/50 p-4 rounded border border-slate-200 dark:border-slate-700">
+            <div className="flex-1 space-y-4 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium mb-1 text-slate-500">اسم المنصة</label>
                   <input
@@ -288,10 +288,10 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
             <button
               type="button"
               onClick={() => removeSocialLink(index)}
-              className="text-red-500 hover:text-red-700 p-2"
+              className="w-full sm:w-auto text-red-500 hover:text-red-700 sm:p-2 sm:mt-5 text-sm sm:text-base border border-red-200 dark:border-red-900 sm:border-none rounded py-2 sm:py-0 bg-red-50 dark:bg-red-900/20 sm:bg-transparent mt-2 sm:mt-0"
               title="حذف الرابط"
             >
-              ✕
+              حذف
             </button>
           </div>
         ))}
@@ -304,7 +304,7 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
         <button
           type="submit"
           disabled={isSaving}
-          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-medium py-2 px-8 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-medium py-3 sm:py-2 px-8 rounded-lg transition-colors text-lg sm:text-base"
         >
           {isSaving ? "جاري الحفظ..." : "حفظ الإعدادات"}
         </button>
