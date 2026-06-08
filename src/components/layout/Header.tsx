@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { SiteSettings } from '@/cms/schemas';
+import { SiteSettings } from '@/lib/types';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
 interface HeaderProps {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useCallback } from "react";
-import { Category, Post } from "@/cms/schemas";
+import { Category, Post } from "@/lib/types";
 import { Search } from "@/components/ui/Search";
 import { CategoryTabs } from "@/components/ui/CategoryTabs";
 import { PostCard } from "@/components/ui/PostCard";
@@ -31,7 +31,7 @@ export function HomePageClient({ categories, initialPosts }: HomePageClientProps
   const filteredPosts = useMemo(() => {
     return initialPosts.filter((post) => {
       const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            post.bodyContent.toLowerCase().includes(searchQuery.toLowerCase());
+                            JSON.stringify(post.bodyContent).toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
 
       return matchesSearch && matchesCategory;

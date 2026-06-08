@@ -1,5 +1,5 @@
 import React from 'react';
-import { SiteSettings } from '@/cms/schemas';
+import { SiteSettings } from '@/lib/types';
 import { Facebook, Twitter, Instagram, Linkedin, Link as LinkIcon } from 'lucide-react';
 
 interface FooterProps {
