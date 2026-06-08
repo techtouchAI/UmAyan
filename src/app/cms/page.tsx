@@ -34,7 +34,8 @@ export default function CMSPage() {
       setPosts(data);
     } catch (error: unknown) {
       console.error(error);
-      toast.error("فشل في تحميل المنشورات");
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      toast.error(`فشل في تحميل المنشورات: ${errorMessage}`);
     } finally {
       setIsLoadingPosts(false);
     }
@@ -47,7 +48,8 @@ export default function CMSPage() {
       if (data) setSettingsData(data);
     } catch (error: unknown) {
       console.error(error);
-      toast.error("فشل في تحميل الإعدادات");
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      toast.error(`فشل في تحميل الإعدادات: ${errorMessage}`);
     } finally {
       setIsLoadingSettings(false);
     }
@@ -89,7 +91,8 @@ export default function CMSPage() {
       loadPosts(token);
     } catch (error: unknown) {
       console.error(error);
-      toast.error("فشل في حفظ المنشور");
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      toast.error(`فشل في حفظ المنشور: ${errorMessage}`);
     } finally {
       setIsSavingPost(false);
     }
@@ -105,7 +108,8 @@ export default function CMSPage() {
       loadPosts(token);
     } catch (error: unknown) {
       console.error(error);
-      toast.error("فشل في حذف المنشور");
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      toast.error(`فشل في حذف المنشور: ${errorMessage}`);
     }
   };
 
@@ -117,7 +121,8 @@ export default function CMSPage() {
       loadSettings(token); // Reload to get new SHA
     } catch (error: unknown) {
       console.error(error);
-      toast.error("فشل في حفظ الإعدادات");
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      toast.error(`فشل في حفظ الإعدادات: ${errorMessage}`);
     }
   };
 

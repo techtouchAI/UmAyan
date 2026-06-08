@@ -55,7 +55,10 @@ export async function fetchGithubPosts(token: string): Promise<CMSPost[]> {
     if (response.status === 404) {
       return [];
     }
-    throw new Error("Failed to fetch posts list");
+    const errorData = await response.json().catch(() => ({}));
+    let errMsg = errorData.message || response.statusText;
+    if (errMsg.includes("Bad credentials")) errMsg = "رمز التحقق (Token) غير صالح";
+    throw new Error(`فشل في جلب قائمة المنشورات: ${errMsg}`);
   }
 
   const files: GitHubFile[] = await response.json();
@@ -113,13 +116,16 @@ export async function saveGithubPost(token: string, post: CMSPost): Promise<void
   });
 
   if (!response.ok) {
-    throw new Error("Failed to save post");
+    const errorData = await response.json().catch(() => ({}));
+    let errMsg = errorData.message || response.statusText;
+    if (errMsg.includes("Bad credentials")) errMsg = "رمز التحقق (Token) غير صالح";
+    throw new Error(`فشل في حفظ المنشور: ${errMsg}`);
   }
 }
 
 export async function deleteGithubPost(token: string, post: CMSPost): Promise<void> {
   if (!post.sha || !post.fileName) {
-    throw new Error("Missing required post metadata for deletion");
+    throw new Error("بيانات المنشور المطلوبة للحذف غير مكتملة");
   }
 
   const path = `content/posts/${post.fileName}`;
@@ -140,7 +146,10 @@ export async function deleteGithubPost(token: string, post: CMSPost): Promise<vo
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete post");
+    const errorData = await response.json().catch(() => ({}));
+    let errMsg = errorData.message || response.statusText;
+    if (errMsg.includes("Bad credentials")) errMsg = "رمز التحقق (Token) غير صالح";
+    throw new Error(`فشل في حذف المنشور: ${errMsg}`);
   }
 }
 
@@ -159,7 +168,10 @@ export async function fetchGithubSettings(token: string): Promise<{ settings: Si
     if (response.status === 404) {
       return null;
     }
-    throw new Error("Failed to fetch settings");
+    const errorData = await response.json().catch(() => ({}));
+    let errMsg = errorData.message || response.statusText;
+    if (errMsg.includes("Bad credentials")) errMsg = "رمز التحقق (Token) غير صالح";
+    throw new Error(`فشل في جلب الإعدادات: ${errMsg}`);
   }
 
   const file: GitHubFile = await response.json();
@@ -198,7 +210,10 @@ export async function saveGithubSettings(token: string, settings: SiteSettings, 
   });
 
   if (!response.ok) {
-    throw new Error("Failed to save settings");
+    const errorData = await response.json().catch(() => ({}));
+    let errMsg = errorData.message || response.statusText;
+    if (errMsg.includes("Bad credentials")) errMsg = "رمز التحقق (Token) غير صالح";
+    throw new Error(`فشل في حفظ الإعدادات: ${errMsg}`);
   }
 }
 
@@ -243,7 +258,13 @@ export async function uploadGithubFile(token: string, path: string, base64Conten
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(`Failed to upload file: ${errorData.message || response.statusText}`);
+    let errorMessage = errorData.message || response.statusText;
+    if (errorMessage.includes("Bad credentials")) {
+        errorMessage = "رمز التحقق (Token) غير صالح أو منتهي الصلاحية";
+    } else if (errorMessage.includes("Requires authentication")) {
+        errorMessage = "يتطلب تسجيل الدخول عبر GitHub";
+    }
+    throw new Error(`فشل في رفع الملف: ${errorMessage}`);
   }
 
   const data = await response.json();
