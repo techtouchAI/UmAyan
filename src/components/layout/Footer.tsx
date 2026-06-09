@@ -1,6 +1,6 @@
 import React from 'react';
 import { SiteSettings } from '@/lib/types';
-import { Facebook, Twitter, Instagram, Linkedin, Link as LinkIcon } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, Send, MessageCircle, Link as LinkIcon } from 'lucide-react';
 
 interface FooterProps {
   settings: SiteSettings;
@@ -11,6 +11,9 @@ const iconMap: Record<string, React.ReactNode> = {
   twitter: <Twitter className="w-5 h-5" />,
   instagram: <Instagram className="w-5 h-5" />,
   linkedin: <Linkedin className="w-5 h-5" />,
+  youtube: <Youtube className="w-5 h-5" />,
+  telegram: <Send className="w-5 h-5" />,
+  whatsapp: <MessageCircle className="w-5 h-5" />,
 };
 
 export function Footer({ settings }: FooterProps) {
