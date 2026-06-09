@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import type { CMSPost } from "@/lib/github";
-import { uploadGithubFile, fetchGithubSettings } from "@/lib/github";
+import { uploadGithubFile, fetchGithubSettings, encodeBase64Unicode } from "@/lib/github";
 import type { PostLink } from "@/lib/types";
 import imageCompression from "browser-image-compression";
 
@@ -22,12 +22,14 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
-  // Initialize links array if it doesn't exist
+  // Initialize links and subSections arrays if they don't exist
   useEffect(() => {
-    if (!post.links) {
-      setPost((prev) => ({ ...prev, links: [] }));
-    }
-  }, [post.links]);
+    setPost((prev) => ({
+      ...prev,
+      links: prev.links || [],
+      subSections: prev.subSections || []
+    }));
+  }, []);
 
   // Load existing categories from settings if possible, or provide defaults
   useEffect(() => {
@@ -117,6 +119,25 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
     setPost({ ...post, links: newLinks });
   };
 
+  const addSubSection = () => {
+    setPost({
+      ...post,
+      subSections: [...(post.subSections || []), { title: "", color: "default", content: "" }],
+    });
+  };
+
+  const removeSubSection = (index: number) => {
+    const newSections = [...(post.subSections || [])];
+    newSections.splice(index, 1);
+    setPost({ ...post, subSections: newSections });
+  };
+
+  const updateSubSection = (index: number, field: "title" | "color" | "content", value: string) => {
+    const newSections = [...(post.subSections || [])];
+    newSections[index] = { ...newSections[index], [field]: value };
+    setPost({ ...post, subSections: newSections });
+  };
+
   const removeLink = (index: number) => {
     setPost(prev => ({
       ...prev,
@@ -155,10 +176,10 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                 await uploadGithubFile(
                   token,
                   "content/settings.json",
-                  btoa(encodeURIComponent(JSON.stringify({
+                  encodeBase64Unicode(JSON.stringify({
                       ...currentSettings,
                       categories: [...currentCats, trimmed]
-                  }, null, 2)).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode(parseInt(p1, 16)))),
+                  }, null, 2)),
                   `CMS: Added new category '${trimmed}'`
                 );
             }
@@ -267,16 +288,82 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
             )}
           </div>
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 relative">
             <label className="block text-sm font-medium mb-1">محتوى المقال (Markdown)</label>
             <textarea
               required
-              rows={8}
+              rows={6}
               value={post.bodyContent}
               onChange={(e) => setPost({ ...post, bodyContent: e.target.value })}
-              className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none"
+              className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
+              placeholder="# عنوان رئيسي&#10;**نص عريض**&#10;* عنصر قائمة"
               dir="auto"
             />
+          </div>
+
+          {/* مدير العناوين الفرعية والمحتوى الإضافي */}
+          <div className="md:col-span-2 space-y-4 border-t border-slate-200 dark:border-slate-700 pt-6 mt-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
+              <label className="block text-sm font-bold">العناوين الفرعية الإضافية والمحتوى</label>
+              <button
+                type="button"
+                onClick={addSubSection}
+                className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-sm font-medium py-2 sm:py-1 px-3 rounded transition-colors"
+              >
+                + إضافة عنوان فرعي جديد
+              </button>
+            </div>
+
+            {(post.subSections || []).map((section, index) => (
+              <div key={index} className="flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 relative">
+                <button
+                  type="button"
+                  onClick={() => removeSubSection(index)}
+                  className="absolute top-2 left-2 text-red-500 hover:text-red-700 bg-white dark:bg-slate-900 rounded-full p-1 shadow-sm"
+                  title="حذف هذا القسم"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                </button>
+
+                <div className="flex flex-col md:flex-row gap-4 w-full pr-8 md:pr-0">
+                  <div className="flex-1">
+                    <label className="block text-xs font-medium mb-1 text-slate-500">العنوان الفرعي</label>
+                    <input
+                      type="text"
+                      value={section.title}
+                      onChange={(e) => updateSubSection(index, "title", e.target.value)}
+                      className="w-full px-3 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary outline-none text-sm"
+                      placeholder="اكتب العنوان الفرعي هنا..."
+                    />
+                  </div>
+                  <div className="md:w-1/3">
+                    <label className="block text-xs font-medium mb-1 text-slate-500">لون العنوان</label>
+                    <select
+                      value={section.color}
+                      onChange={(e) => updateSubSection(index, "color", e.target.value)}
+                      className="w-full px-3 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary outline-none text-sm"
+                    >
+                      <option value="default">الافتراضي (أسود/أبيض)</option>
+                      <option value="red">أحمر (#E0353E)</option>
+                      <option value="cyan">سماوي تركواز (#3AD2D6)</option>
+                      <option value="gold">ذهبي أصفر (#EDCF5F)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                   <label className="block text-xs font-medium mb-1 text-slate-500">محتوى القسم (يدعم Markdown)</label>
+                   <textarea
+                     rows={5}
+                     value={section.content}
+                     onChange={(e) => updateSubSection(index, "content", e.target.value)}
+                     className="w-full px-3 py-2 border rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
+                     placeholder="# عنوان فرعي ثانوي&#10;شرح إضافي هنا..."
+                     dir="auto"
+                   />
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="md:col-span-2">

@@ -112,6 +112,29 @@ export default async function PostPage({
         <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
       </div>
 
+      {post.subSections && post.subSections.length > 0 && (
+        <div className="space-y-8 mb-10">
+          {post.subSections.map((section, index) => {
+            const colorClass = section.color === "red" ? "color-red" :
+                               section.color === "cyan" ? "color-cyan" :
+                               section.color === "gold" ? "color-gold" : "";
+
+            return (
+              <div key={index} className="flex flex-col gap-3">
+                {section.title && (
+                  <h2 className={`text-2xl font-bold ${colorClass} transition-colors`}>
+                    {section.title}
+                  </h2>
+                )}
+                <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline max-w-none leading-relaxed">
+                  <ReactMarkdown>{section.content}</ReactMarkdown>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {post.conclusion && (
         <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-lg border border-slate-100 dark:border-slate-800 mb-10">
           <p className="text-slate-800 dark:text-slate-200 font-medium">

@@ -34,4 +34,17 @@ body {
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
   }
+
+  .color-red {
+    color: #E0353E;
+  }
+  .color-cyan {
+    color: #3AD2D6;
+  }
+  .color-gold {
+    color: #EDCF5F;
+  }
+  .color-gold-light {
+    color: #E2D287;
+  }
 }
