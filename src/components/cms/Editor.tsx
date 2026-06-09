@@ -228,15 +228,30 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
              )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">العنوان</label>
-            <input
-              required
-              type="text"
-              value={post.title}
-              onChange={(e) => setPost({ ...post, title: e.target.value })}
-              className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="md:col-span-3">
+              <label className="block text-sm font-medium mb-1">العنوان</label>
+              <input
+                required
+                type="text"
+                value={post.title}
+                onChange={(e) => setPost({ ...post, title: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
+              />
+            </div>
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium mb-1">لون العنوان</label>
+              <select
+                value={post.titleColor || "default"}
+                onChange={(e) => setPost({ ...post, titleColor: e.target.value as any })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
+              >
+                <option value="default">الافتراضي</option>
+                <option value="red">أحمر (#E0353E)</option>
+                <option value="cyan">سماوي تركواز (#3AD2D6)</option>
+                <option value="gold">ذهبي أصفر (#EDCF5F)</option>
+              </select>
+            </div>
           </div>
 
           <div>
