@@ -82,7 +82,7 @@ export default async function PostPage({
   const randomPosts = [...otherPosts].sort(() => 0.5 - Math.random()).slice(0, 5);
 
   return (
-    <article className="max-w-7xl mx-auto w-full px-2 sm:px-6 relative">
+    <article className="w-full relative">
       <div className="mb-6 inline-flex">
         <Link
           href="/"
