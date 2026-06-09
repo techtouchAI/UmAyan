@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ShareButtons } from "@/components/ui/ShareButtons";
+import { RelatedLinks } from "@/components/ui/RelatedLinks";
 import { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { ArrowRight } from "lucide-react";
 
 export async function generateStaticParams() {
@@ -116,7 +118,7 @@ export default async function PostPage({
       {/* Main Content Container */}
       <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
         <div className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose mb-10 text-slate-700 dark:text-slate-300">
-          <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
+          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{post.bodyContent}</ReactMarkdown>
         </div>
 
 
@@ -130,29 +132,7 @@ export default async function PostPage({
         </div>
       )}
 
-      {post.links && post.links.length > 0 && (
-        <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700/50 rounded-2xl p-6 sm:p-8 mb-10">
-          <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 text-slate-800 dark:text-slate-200">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            مراجع ومصادر خارجية
-          </h3>
-          <ul className="space-y-3">
-            {post.links.map((link, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <div className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0"></div>
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80 font-medium text-sm sm:text-base transition-colors break-words underline underline-offset-4 decoration-primary/30 hover:decoration-primary/80"
-                >
-                  {link.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {post.links && post.links.length > 0 && <RelatedLinks links={post.links} />}
 
       <ShareButtons title={post.title} url={postUrl} />
 

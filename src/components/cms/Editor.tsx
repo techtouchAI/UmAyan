@@ -63,6 +63,15 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
         return;
     }
 
+    // Strict validation: Max 2MB
+    const MAX_SIZE_MB = 2;
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        toast.error(`حجم الصورة يتجاوز الحد الأقصى المسموح (${MAX_SIZE_MB} ميجابايت). الرجاء ضغط الصورة وإعادة المحاولة.`);
+        // Reset the input value so the same file can be selected again if needed
+        e.target.value = "";
+        return;
+    }
+
     setIsUploading(true);
     const toastId = toast.loading("جاري رفع الصورة...");
 
@@ -297,7 +306,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
               value={post.bodyContent}
               onChange={(e) => setPost({ ...post, bodyContent: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
-              placeholder="شرح توضيحي للمارك داون:&#10;# لكتابة عنوان رئيسي استخدم الهاشتاج قبل النص (مثال: # عنوان رئيسي)&#10;## لكتابة عنوان فرعي استخدم علامتي هاشتاج (مثال: ## عنوان فرعي)&#10;** لجعل النص عريضاً ضعه بين نجمتين (مثال: **نص مهم جداً**)&#10;* لإنشاء قائمة نقطية استخدم نجمة ثم مسافة (مثال: * النقطة الأولى)&#10;[نص الرابط](رابط الموقع) لإضافة رابط تشعبي&#10;> لإضافة اقتباس مميز"
+              placeholder="شرح توضيحي للمارك داون:&#10;# عنوان رئيسي&#10;## عنوان فرعي&#10;<h3 class='color-red'>عنوان أحمر</h3>&#10;<h3 class='color-cyan'>عنوان سماوي</h3>&#10;<h3 class='color-gold'>عنوان ذهبي</h3>&#10;**نص عريض**&#10;* قائمة نقطية&#10;[رابط](url)"
               dir="auto"
             />
           </div>
