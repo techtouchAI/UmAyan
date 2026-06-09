@@ -4,7 +4,7 @@
   "slug": "Umyman",
   "portraitImage": "https://raw.githubusercontent.com/techtouchAI/UmAyan/Main/public/uploads/post-1780995645051.webp",
   "category": "تطوير الذات",
-  "bodyContent": "مؤسسة العالم\n**مؤسسة العالم\n##مؤسسة العالم\n#مؤسسة العالم\n#مؤسسة العالم**\nهنا يتم نشر الذات العنصرية",
+  "bodyContent": "# مؤسسة العالم\n**مؤسسة العالم\nمؤسسة العالم\nمؤسسة العالم\nمؤسسة العالم**\nهنا يتم نشر الذات العنصرية",
   "subSections": [
     {
       "title": "قسائم العقل",
@@ -14,10 +14,10 @@
     {
       "title": "التفكير الجمعي",
       "color": "gold",
-      "content": "#نهاية القطيع\nبظاية حقبة وحياة جدبدة\n\n#نهاية السفر الكوني\nبداية العالم الجدبد"
+      "content": "# نهاية القطيع\nبداية حقبة وحياة جدبدة\n\n# نهاية السفر الكوني\nبداية العالم الجدبد"
     }
   ],
-  "conclusion": "نهاية المقال",
+  "conclusion": "# نهاية المقال",
   "seoMetaTitle": "",
   "seoMetaDescription": ""
 }
