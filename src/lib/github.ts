@@ -92,6 +92,7 @@ export async function saveGithubPost(token: string, post: CMSPost): Promise<void
     conclusion: post.conclusion,
     seoMetaTitle: post.seoMetaTitle,
     seoMetaDescription: post.seoMetaDescription,
+    links: post.links,
   };
 
   const contentStr = JSON.stringify(postData, null, 2);
