@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export function Header({ settings }: HeaderProps) {
   return (
-    <header className="w-full mb-12 border-b border-slate-100 dark:border-slate-800 relative bg-white dark:bg-[#0a0a0a]">
+    <header className="w-full border-b border-slate-100 dark:border-slate-800 relative bg-white dark:bg-[#0a0a0a]">
       {/* Cover Image */}
       <div className="relative w-full h-24 md:h-32 bg-slate-200 dark:bg-slate-800">
         {settings.coverImage ? (
@@ -25,24 +25,26 @@ export function Header({ settings }: HeaderProps) {
         ) : (
           <div className="w-full h-full bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-800 dark:to-slate-700"></div>
         )}
-        <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-white/80 dark:bg-black/60 backdrop-blur-md rounded-full p-1 shadow-sm border border-slate-200/50 dark:border-slate-700/50">
+        <div className="fixed top-4 left-4 z-50 flex items-center gap-1.5 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-full p-0.5 shadow-sm border border-slate-200/30 dark:border-slate-700/30">
           <Link
             href="/"
-            className="p-2 rounded-full text-slate-700 hover:text-primary hover:bg-slate-100 dark:text-slate-300 dark:hover:text-primary dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-full text-slate-700 hover:text-primary hover:bg-white/50 dark:text-slate-300 dark:hover:text-primary dark:hover:bg-black/50 transition-colors"
             aria-label="الرئيسية"
           >
-            <Home className="w-5 h-5" />
+            <Home className="w-4 h-4" />
           </Link>
-          <div className="w-[1px] h-4 bg-slate-300 dark:bg-slate-600"></div>
-          <ThemeToggle />
+          <div className="w-[1px] h-3 bg-slate-300/50 dark:bg-slate-600/50"></div>
+          <div className="scale-75 origin-center -mx-1">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 
       {/* Profile Info Container */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end pb-4 pt-0">
           {/* Profile Image (Overlapping, on the right in RTL) */}
-          <div className="-mt-12 sm:-mt-16 relative z-10 ml-0 sm:ml-6 mb-3 sm:mb-0">
+          <div className="-mt-10 sm:-mt-14 relative z-10 ml-0 sm:ml-4 mb-2 sm:mb-0">
             <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {settings.profileImage && (
@@ -60,13 +62,13 @@ export function Header({ settings }: HeaderProps) {
           </div>
 
           {/* Text Content */}
-          <div className="text-start flex-1 pt-1 sm:pt-2">
+          <div className="text-start flex-1 pt-1">
             <Link href="/">
-              <h1 className="text-xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 hover:text-primary transition-colors mb-1 sm:mb-2 cursor-pointer">
+              <h1 className="text-lg sm:text-2xl font-bold text-slate-800 dark:text-slate-100 hover:text-primary transition-colors mb-0.5 cursor-pointer">
                 {settings.siteName}
               </h1>
             </Link>
-            <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-2xl">
+            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm max-w-2xl truncate">
               {settings.siteDescription}
             </p>
           </div>

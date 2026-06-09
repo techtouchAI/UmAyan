@@ -1,9 +1,11 @@
 import { getPostBySlug, getPosts } from "@/lib/api";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { ShareButtons } from "@/components/ui/ShareButtons";
 import { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
+import { ArrowRight } from "lucide-react";
 
 export async function generateStaticParams() {
   try {
@@ -60,8 +62,10 @@ export default async function PostPage({
   const resolvedParams = await params;
 
   let post;
+  let allPosts: Array<any> = [];
   try {
     post = await getPostBySlug(resolvedParams.slug);
+    allPosts = await getPosts();
   } catch {
     post = undefined;
   }
@@ -73,8 +77,22 @@ export default async function PostPage({
   const siteUrl = "https://example.com";
   const postUrl = `${siteUrl}/posts/${post.slug}`;
 
+  // Get up to 5 random posts for the bottom section
+  const otherPosts = allPosts.filter(p => p.slug !== post.slug);
+  const randomPosts = [...otherPosts].sort(() => 0.5 - Math.random()).slice(0, 5);
+
   return (
-    <article className="max-w-3xl mx-auto w-full px-4 sm:px-6">
+    <article className="max-w-3xl mx-auto w-full px-4 sm:px-6 relative">
+      <div className="mb-6 inline-flex">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors font-medium bg-slate-100 dark:bg-slate-800/50 py-2 px-4 rounded-full"
+        >
+          <ArrowRight className="w-4 h-4" />
+          <span>رجوع</span>
+        </Link>
+      </div>
+
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-8 leading-tight">
         {post.title}
       </h1>
@@ -123,6 +141,34 @@ export default async function PostPage({
       )}
 
       <ShareButtons title={post.title} url={postUrl} />
+
+      {randomPosts.length > 0 && (
+        <div className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+          <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">اقرأ أيضاً</h3>
+          <div className="flex flex-col gap-4">
+            {randomPosts.map((rp) => (
+              <Link
+                key={rp.slug}
+                href={`/posts/${rp.slug}`}
+                className="flex items-center gap-4 group p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-800"
+              >
+                <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm border border-slate-100 dark:border-slate-800">
+                  <Image
+                    src={rp.portraitImage}
+                    alt={rp.title}
+                    fill
+                    sizes="80px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <h4 className="font-bold text-lg text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors line-clamp-2">
+                  {rp.title}
+                </h4>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </article>
   );
 }
