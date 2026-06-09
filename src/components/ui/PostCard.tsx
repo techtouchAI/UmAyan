@@ -11,13 +11,14 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/posts/${post.slug}`} className="group block h-full">
       <div className="flex flex-col h-full bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden transition-all hover:shadow-md hover:-translate-y-1">
-        <div className="relative w-full aspect-[4/5] overflow-hidden flex justify-center items-center">
+        <div className="relative w-full overflow-hidden flex justify-center items-center">
           <Image
             src={post.portraitImage}
             alt={post.title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
           />
         </div>
         <div className="p-4 flex-grow flex flex-col justify-between">

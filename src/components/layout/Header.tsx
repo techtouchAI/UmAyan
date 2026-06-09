@@ -42,10 +42,10 @@ export function Header({ settings }: HeaderProps) {
 
       {/* Profile Info Container */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col sm:flex-row items-center sm:items-end pb-4 pt-0 text-center sm:text-start">
+        <div className="flex flex-row items-start pb-2 pt-0 text-start">
           {/* Profile Image (Overlapping, on the right in RTL) */}
-          <div className="-mt-10 sm:-mt-14 relative z-20 mb-3 sm:mb-0 ms-0 sm:ms-4 shrink-0">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md mx-auto sm:mx-0">
+          <div className="-mt-10 sm:-mt-14 relative z-20 mb-0 ms-4 shrink-0">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {settings.profileImage && (
                   <Image
@@ -62,13 +62,13 @@ export function Header({ settings }: HeaderProps) {
           </div>
 
           {/* Text Content */}
-          <div className="flex-1 pt-1 w-full px-2 sm:px-0">
+          <div className="flex-1 pt-2 w-full px-0">
             <Link href="/">
               <h1 className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor === 'red' ? 'color-red' : settings.siteNameColor === 'cyan' ? 'color-cyan' : settings.siteNameColor === 'gold' ? 'color-gold' : 'text-slate-800 dark:text-slate-100'}`}>
                 {settings.siteName}
               </h1>
             </Link>
-            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-2xl mx-auto sm:mx-0 line-clamp-2 sm:truncate">
+            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm w-full">
               {settings.siteDescription}
             </p>
           </div>
