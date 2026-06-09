@@ -93,17 +93,18 @@ export default async function PostPage({
         </Link>
       </div>
 
-      <h1 className={`text-3xl sm:text-4xl font-bold mb-8 leading-tight ${post.titleColor === 'red' ? 'color-red' : post.titleColor === 'cyan' ? 'color-cyan' : post.titleColor === 'gold' ? 'color-gold' : 'text-slate-900 dark:text-white'}`}>
+      <h1 className={`text-center text-3xl sm:text-4xl font-bold mb-8 leading-tight ${post.titleColor === 'red' ? 'color-red' : post.titleColor === 'cyan' ? 'color-cyan' : post.titleColor === 'gold' ? 'color-gold' : 'text-slate-900 dark:text-white'}`}>
         {post.title}
       </h1>
 
-      <div className="relative w-full aspect-[4/5] max-w-lg mx-auto mb-10 overflow-hidden rounded-xl shadow-md">
+      <div className="relative w-full max-w-lg mx-auto mb-10 overflow-hidden rounded-xl shadow-md flex justify-center bg-slate-100 dark:bg-slate-800">
         <Image
           src={post.portraitImage}
           alt={post.title}
-          fill
+          width={500}
+          height={600}
           sizes="(max-width: 768px) 100vw, 500px"
-          className="object-cover"
+          className="object-contain w-auto h-auto max-h-[70vh]"
           priority
         />
       </div>
@@ -184,7 +185,7 @@ export default async function PostPage({
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <h4 className="font-bold text-lg text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors line-clamp-2">
+                <h4 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
                   {rp.title}
                 </h4>
               </Link>

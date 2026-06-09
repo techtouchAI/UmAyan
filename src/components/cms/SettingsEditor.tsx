@@ -304,14 +304,21 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1 text-slate-500">الأيقونة (اختياري)</label>
-                  <input
-                    type="text"
-                    value={link.icon}
+                  <label className="block text-xs font-medium mb-1 text-slate-500">الأيقونة (اختر من القائمة)</label>
+                  <select
+                    value={link.icon.toLowerCase()}
                     onChange={(e) => updateSocialLink(index, "icon", e.target.value)}
                     className="w-full px-3 py-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary outline-none text-sm"
-                    placeholder="مثال: Twitter, Facebook"
-                  />
+                  >
+                    <option value="link">أيقونة رابط عادية (Link)</option>
+                    <option value="facebook">فيسبوك (Facebook)</option>
+                    <option value="twitter">تويتر (Twitter/X)</option>
+                    <option value="instagram">انستغرام (Instagram)</option>
+                    <option value="linkedin">لينكد إن (LinkedIn)</option>
+                    <option value="youtube">يوتيوب (YouTube)</option>
+                    <option value="telegram">تيليكرام (Telegram)</option>
+                    <option value="whatsapp">واتساب (WhatsApp)</option>
+                  </select>
                 </div>
               </div>
               <div>
