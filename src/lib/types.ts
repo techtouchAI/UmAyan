@@ -27,12 +27,6 @@ export interface PostLink {
   url: string;
 }
 
-export interface SubSection {
-  title: string;
-  color: 'red' | 'cyan' | 'gold' | 'default';
-  content: string;
-}
-
 export interface Post {
   portraitImage: string;
   title: string;
@@ -40,7 +34,6 @@ export interface Post {
   slug: string;
   category: string;
   bodyContent: string;
-  subSections?: SubSection[];
   conclusion: string;
   seoMetaTitle: string;
   seoMetaDescription: string;

@@ -88,7 +88,6 @@ export async function saveGithubPost(token: string, post: CMSPost): Promise<void
     portraitImage: post.portraitImage,
     category: post.category,
     bodyContent: post.bodyContent,
-    subSections: post.subSections,
     conclusion: post.conclusion,
     seoMetaTitle: post.seoMetaTitle,
     seoMetaDescription: post.seoMetaDescription,

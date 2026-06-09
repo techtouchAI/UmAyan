@@ -44,7 +44,7 @@ export function Header({ settings }: HeaderProps) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex flex-col sm:flex-row items-start sm:items-end pb-4 pt-0">
           {/* Profile Image (Overlapping, on the right in RTL) */}
-          <div className="-mt-10 sm:-mt-14 relative z-10 ml-0 sm:ml-4 mb-2 sm:mb-0">
+          <div className="-mt-10 sm:-mt-14 relative z-10 mb-2 sm:mb-0 ms-0 sm:ms-4">
             <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {settings.profileImage && (
