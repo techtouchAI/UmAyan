@@ -2,6 +2,7 @@ export interface SiteSettings {
   coverImage?: string;
   profileImage: string;
   siteName: string;
+  siteNameColor?: 'red' | 'cyan' | 'gold' | 'default';
   siteDescription: string;
   categories?: string[];
   floatingButton: {
@@ -35,6 +36,7 @@ export interface SubSection {
 export interface Post {
   portraitImage: string;
   title: string;
+  titleColor?: 'red' | 'cyan' | 'gold' | 'default';
   slug: string;
   category: string;
   bodyContent: string;

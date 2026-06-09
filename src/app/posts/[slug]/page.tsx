@@ -93,7 +93,7 @@ export default async function PostPage({
         </Link>
       </div>
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-8 leading-tight">
+      <h1 className={`text-3xl sm:text-4xl font-bold mb-8 leading-tight ${post.titleColor === 'red' ? 'color-red' : post.titleColor === 'cyan' ? 'color-cyan' : post.titleColor === 'gold' ? 'color-gold' : 'text-slate-900 dark:text-white'}`}>
         {post.title}
       </h1>
 

@@ -182,16 +182,31 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
       <div className="space-y-4 border-b border-slate-200 dark:border-slate-700 pb-6">
         <h3 className="text-xl font-semibold">معلومات الموقع</h3>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">اسم الموقع</label>
-          <input
-            type="text"
-            value={settings.siteName}
-            onChange={(e) => setSettings({...settings, siteName: e.target.value})}
-            className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-            placeholder="أدخل اسم الموقع"
-            required
-          />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="md:col-span-3">
+            <label className="block text-sm font-medium mb-1">اسم الموقع</label>
+            <input
+              type="text"
+              value={settings.siteName}
+              onChange={(e) => setSettings({...settings, siteName: e.target.value})}
+              className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              placeholder="أدخل اسم الموقع"
+              required
+            />
+          </div>
+          <div className="md:col-span-1">
+            <label className="block text-sm font-medium mb-1">لون الاسم</label>
+            <select
+              value={settings.siteNameColor || "default"}
+              onChange={(e) => setSettings({...settings, siteNameColor: e.target.value as any})}
+              className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+            >
+              <option value="default">الافتراضي</option>
+              <option value="red">أحمر (#E0353E)</option>
+              <option value="cyan">سماوي تركواز (#3AD2D6)</option>
+              <option value="gold">ذهبي أصفر (#EDCF5F)</option>
+            </select>
+          </div>
         </div>
 
         <div>
