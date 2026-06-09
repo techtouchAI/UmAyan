@@ -64,7 +64,7 @@ export function Header({ settings }: HeaderProps) {
           {/* Text Content */}
           <div className="flex-1 pt-2 w-full px-0">
             <Link href="/">
-              <h1 className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor === 'red' ? 'color-red' : settings.siteNameColor === 'cyan' ? 'color-cyan' : settings.siteNameColor === 'gold' ? 'color-gold' : 'text-slate-800 dark:text-slate-100'}`}>
+              <h1 className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor === 'red' ? 'text-red-600 dark:text-red-400' : settings.siteNameColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : settings.siteNameColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-slate-100'}`}>
                 {settings.siteName}
               </h1>
             </Link>

@@ -97,7 +97,7 @@ export default async function PostPage({
 
       {/* Title Container */}
       <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-8 backdrop-blur-sm">
-        <h1 className={`text-center text-3xl sm:text-5xl font-extrabold leading-tight ${post.titleColor === 'red' ? 'color-red' : post.titleColor === 'cyan' ? 'color-cyan' : post.titleColor === 'gold' ? 'color-gold' : 'text-slate-900 dark:text-white'}`}>
+        <h1 className={`text-center text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight ${post.titleColor === 'red' ? 'text-red-600 dark:text-red-400' : post.titleColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : post.titleColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-slate-100'}`}>
           {post.title}
         </h1>
       </div>

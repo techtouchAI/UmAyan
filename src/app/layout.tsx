@@ -32,7 +32,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
           <Header settings={settings} />
           <div className="flex-grow flex flex-col mx-auto w-[95%]">
-            <main className="flex-grow pb-8 pt-4">
+            <main className="flex-grow pb-32 pt-4">
               {children}
             </main>
             <Footer settings={settings} />
