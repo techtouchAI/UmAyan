@@ -1,0 +1,18 @@
+{
+  "profileImage": "https://raw.githubusercontent.com/techtouchAI/UmAyan/Main/public/uploads/profile-1780965156799.webp",
+  "siteName": "دعم نفسي ",
+  "siteDescription": "لتقديم الدعم والتوجيه النفسي  الأسري بأسلوب علمي.",
+  "floatingButton": {
+    "iconType": "telegram",
+    "linkOrPhone": "https://t.me/techtouch7",
+    "enabled": true
+  },
+  "socialLinks": [
+    {
+      "platformName": "تيكتوك",
+      "link": "TikTok.com",
+      "icon": "Tiktok"
+    }
+  ],
+  "coverImage": "https://raw.githubusercontent.com/techtouchAI/UmAyan/Main/public/uploads/cover-1780965352208.webp"
+}
