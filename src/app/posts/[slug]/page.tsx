@@ -82,7 +82,7 @@ export default async function PostPage({
   const randomPosts = [...otherPosts].sort(() => 0.5 - Math.random()).slice(0, 5);
 
   return (
-    <article className="max-w-4xl mx-auto w-full px-4 sm:px-6 relative">
+    <article className="max-w-7xl mx-auto w-full px-2 sm:px-6 relative">
       <div className="mb-6 inline-flex">
         <Link
           href="/"
@@ -115,7 +115,7 @@ export default async function PostPage({
 
       {/* Main Content Container */}
       <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
-        <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-lg leading-relaxed mb-10">
+        <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-base sm:text-lg leading-relaxed mb-10">
           <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
         </div>
 
@@ -129,11 +129,11 @@ export default async function PostPage({
               return (
                 <div key={index} className="flex flex-col gap-4">
                   {section.title && (
-                    <h2 className={`text-2xl sm:text-3xl font-bold ${colorClass} transition-colors`}>
+                    <h2 className={`text-xl sm:text-3xl font-bold ${colorClass} transition-colors`}>
                       {section.title}
                     </h2>
                   )}
-                  <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline max-w-none text-lg leading-relaxed">
+                  <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline max-w-none text-base sm:text-lg leading-relaxed">
                     <ReactMarkdown>{section.content}</ReactMarkdown>
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export default async function PostPage({
 
       {post.conclusion && (
         <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
-          <p className="text-slate-800 dark:text-slate-200 font-medium text-lg leading-relaxed">
+          <p className="text-slate-800 dark:text-slate-200 font-medium text-base sm:text-lg leading-relaxed">
             {post.conclusion}
           </p>
         </div>
@@ -153,7 +153,7 @@ export default async function PostPage({
 
       {post.links && post.links.length > 0 && (
         <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10 space-y-6">
-          <h3 className="text-2xl font-bold mb-4">روابط ذات صلة</h3>
+          <h3 className="text-xl sm:text-2xl font-bold mb-4">روابط ذات صلة</h3>
           <ul className="space-y-4">
             {post.links.map((link, index) => (
               <li key={index} className="flex items-center gap-3">
@@ -162,7 +162,7 @@ export default async function PostPage({
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80 font-medium text-lg transition-colors"
+                  className="text-primary hover:text-primary/80 font-medium text-base sm:text-lg transition-colors break-words"
                 >
                   {link.title}
                 </a>
