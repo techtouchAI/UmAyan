@@ -3,13 +3,13 @@
 
 :root {
   --background: #F8FAFC;
-  --foreground: #334155;
+  --foreground: #000000;
   --primary: #AEC6CF;
 }
 
 [data-theme='dark'] {
   --background: #0F172A;
-  --foreground: #CBD5E1;
+  --foreground: #FFFFFF;
   --primary: #7A9EB1;
 }
 
