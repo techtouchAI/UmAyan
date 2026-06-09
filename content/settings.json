@@ -11,9 +11,14 @@
     {
       "platformName": "فيسبوك",
       "link": "Facebook.com",
-      "icon": "فيسبوك"
+      "icon": "facebook"
+    },
+    {
+      "platformName": "اليوتيوب",
+      "link": "https://t.me/techtouch7",
+      "icon": "youtube"
     }
   ],
   "coverImage": "https://raw.githubusercontent.com/techtouchAI/UmAyan/Main/public/uploads/cover-1780965352208.webp",
-  "siteNameColor": "gold"
+  "siteNameColor": "cyan"
 }
