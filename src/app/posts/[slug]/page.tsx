@@ -82,7 +82,7 @@ export default async function PostPage({
   const randomPosts = [...otherPosts].sort(() => 0.5 - Math.random()).slice(0, 5);
 
   return (
-    <article className="max-w-3xl mx-auto w-full px-4 sm:px-6 relative">
+    <article className="max-w-4xl mx-auto w-full px-4 sm:px-6 relative">
       <div className="mb-6 inline-flex">
         <Link
           href="/"
@@ -93,68 +93,76 @@ export default async function PostPage({
         </Link>
       </div>
 
-      <h1 className={`text-center text-3xl sm:text-4xl font-bold mb-8 leading-tight ${post.titleColor === 'red' ? 'color-red' : post.titleColor === 'cyan' ? 'color-cyan' : post.titleColor === 'gold' ? 'color-gold' : 'text-slate-900 dark:text-white'}`}>
-        {post.title}
-      </h1>
+      {/* Title Container */}
+      <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-8 backdrop-blur-sm">
+        <h1 className={`text-center text-3xl sm:text-5xl font-extrabold leading-tight ${post.titleColor === 'red' ? 'color-red' : post.titleColor === 'cyan' ? 'color-cyan' : post.titleColor === 'gold' ? 'color-gold' : 'text-slate-900 dark:text-white'}`}>
+          {post.title}
+        </h1>
+      </div>
 
-      <div className="relative w-full max-w-lg mx-auto mb-10 overflow-hidden rounded-xl shadow-md flex justify-center bg-slate-100 dark:bg-slate-800">
+      {/* Adaptive Image Container */}
+      <div className="relative w-full mb-10 overflow-hidden rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700/50 flex justify-center bg-slate-50 dark:bg-[#0a0a0a]">
         <Image
           src={post.portraitImage}
           alt={post.title}
-          width={500}
-          height={600}
-          sizes="(max-width: 768px) 100vw, 500px"
-          className="object-contain w-auto h-auto max-h-[70vh]"
+          width={1200}
+          height={800}
+          sizes="(max-width: 1024px) 100vw, 1200px"
+          className="object-contain w-full h-auto max-h-[85vh]"
           priority
         />
       </div>
 
-      <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-lg leading-relaxed mb-10">
-        <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
+      {/* Main Content Container */}
+      <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
+        <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-lg leading-relaxed mb-10">
+          <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
+        </div>
+
+        {post.subSections && post.subSections.length > 0 && (
+          <div className="space-y-10 mb-10 border-t border-slate-100 dark:border-slate-700 pt-8 mt-8">
+            {post.subSections.map((section, index) => {
+              const colorClass = section.color === "red" ? "color-red" :
+                                 section.color === "cyan" ? "color-cyan" :
+                                 section.color === "gold" ? "color-gold" : "";
+
+              return (
+                <div key={index} className="flex flex-col gap-4">
+                  {section.title && (
+                    <h2 className={`text-2xl sm:text-3xl font-bold ${colorClass} transition-colors`}>
+                      {section.title}
+                    </h2>
+                  )}
+                  <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline max-w-none text-lg leading-relaxed">
+                    <ReactMarkdown>{section.content}</ReactMarkdown>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {post.subSections && post.subSections.length > 0 && (
-        <div className="space-y-8 mb-10">
-          {post.subSections.map((section, index) => {
-            const colorClass = section.color === "red" ? "color-red" :
-                               section.color === "cyan" ? "color-cyan" :
-                               section.color === "gold" ? "color-gold" : "";
-
-            return (
-              <div key={index} className="flex flex-col gap-3">
-                {section.title && (
-                  <h2 className={`text-2xl font-bold ${colorClass} transition-colors`}>
-                    {section.title}
-                  </h2>
-                )}
-                <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline max-w-none leading-relaxed">
-                  <ReactMarkdown>{section.content}</ReactMarkdown>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
       {post.conclusion && (
-        <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-lg border border-slate-100 dark:border-slate-800 mb-10">
-          <p className="text-slate-800 dark:text-slate-200 font-medium">
+        <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
+          <p className="text-slate-800 dark:text-slate-200 font-medium text-lg leading-relaxed">
             {post.conclusion}
           </p>
         </div>
       )}
 
       {post.links && post.links.length > 0 && (
-        <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-lg border border-slate-100 dark:border-slate-800 mb-10 space-y-4">
-          <h3 className="text-xl font-bold mb-4">روابط ذات صلة</h3>
-          <ul className="space-y-2">
+        <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10 space-y-6">
+          <h3 className="text-2xl font-bold mb-4">روابط ذات صلة</h3>
+          <ul className="space-y-4">
             {post.links.map((link, index) => (
-              <li key={index}>
+              <li key={index} className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-primary/70 shrink-0"></div>
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80 font-medium underline transition-colors"
+                  className="text-primary hover:text-primary/80 font-medium text-lg transition-colors"
                 >
                   {link.title}
                 </a>
