@@ -11,7 +11,7 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/posts/${post.slug}`} className="group block h-full">
       <div className="flex flex-col h-full bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden transition-all hover:shadow-md hover:-translate-y-1">
-        <div className="relative w-full aspect-[4/3] overflow-hidden flex justify-center items-center">
+        <div className="relative w-full aspect-[4/5] overflow-hidden flex justify-center items-center">
           <Image
             src={post.portraitImage}
             alt={post.title}

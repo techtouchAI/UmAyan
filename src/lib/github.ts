@@ -77,6 +77,10 @@ export async function fetchGithubPosts(token: string): Promise<CMSPost[]> {
 }
 
 export async function saveGithubPost(token: string, post: CMSPost): Promise<void> {
+  if (post.title && post.title.length > 100) {
+    throw new Error("عنوان المنشور يتجاوز الحد الأقصى المسموح به (100 حرف).");
+  }
+
   const fileName = post.fileName || `${post.slug}.json`;
   const path = `content/posts/${fileName}`;
   const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`;
