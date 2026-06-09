@@ -13,17 +13,22 @@
     },
     {
       "title": "التفكير الجمعي",
-      "color": "gold",
+      "color": "red",
       "content": "# نهاية القطيع\nبداية حقبة وحياة جدبدة\n\n# نهاية السفر الكوني\nبداية العالم الجدبد"
+    },
+    {
+      "title": "الرحال",
+      "color": "gold",
+      "content": "نهاية العالم"
     }
   ],
-  "conclusion": "# نهاية المقال",
+  "conclusion": "# نهاية المقال الاول",
   "seoMetaTitle": "",
   "seoMetaDescription": "",
   "links": [
     {
-      "title": "اضغط هنا",
-      "url": "https://t.me/techtouch7"
+      "title": "اضغط هنا للدخول",
+      "url": "https://kinantouch.com"
     }
   ]
 }
