@@ -45,7 +45,7 @@ export function HomePageClient({ categories, initialPosts }: HomePageClientProps
   );
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full -mt-6">
       <Search onSearch={handleSearch} />
       <CategoryTabs
         categories={categories}

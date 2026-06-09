@@ -30,9 +30,9 @@ export default async function RootLayout({
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className={`${tajawal.variable} font-sans min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300`}>
         <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
+          <Header settings={settings} />
           <div className="flex-grow flex flex-col mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Header settings={settings} />
-            <main className="flex-grow py-8">
+            <main className="flex-grow pb-8 pt-4">
               {children}
             </main>
             <Footer settings={settings} />
