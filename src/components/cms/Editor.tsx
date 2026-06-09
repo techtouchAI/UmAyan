@@ -311,7 +311,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
               value={post.bodyContent}
               onChange={(e) => setPost({ ...post, bodyContent: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
-              placeholder="# عنوان رئيسي&#10;**نص عريض**&#10;* عنصر قائمة"
+              placeholder="شرح توضيحي للمارك داون:&#10;# لكتابة عنوان رئيسي استخدم الهاشتاج قبل النص (مثال: # عنوان رئيسي)&#10;## لكتابة عنوان فرعي استخدم علامتي هاشتاج (مثال: ## عنوان فرعي)&#10;** لجعل النص عريضاً ضعه بين نجمتين (مثال: **نص مهم جداً**)&#10;* لإنشاء قائمة نقطية استخدم نجمة ثم مسافة (مثال: * النقطة الأولى)&#10;[نص الرابط](رابط الموقع) لإضافة رابط تشعبي&#10;> لإضافة اقتباس مميز"
               dir="auto"
             />
           </div>
@@ -373,7 +373,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                      value={section.content}
                      onChange={(e) => updateSubSection(index, "content", e.target.value)}
                      className="w-full px-3 py-2 border rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
-                     placeholder="# عنوان فرعي ثانوي&#10;شرح إضافي هنا..."
+                     placeholder="استخدم أوامر المارك داون هنا أيضاً...&#10;**نص عريض**، * قائمة، # عنوان"
                      dir="auto"
                    />
                 </div>
