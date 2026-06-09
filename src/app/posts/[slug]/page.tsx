@@ -120,8 +120,28 @@ export default async function PostPage({
         <div className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose mb-10 text-slate-700 dark:text-slate-300">
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>{post.bodyContent}</ReactMarkdown>
         </div>
+        {post.subSections && post.subSections.length > 0 && (
+          <div className="space-y-10 mb-10 border-t border-slate-100 dark:border-slate-700 pt-8 mt-8">
+            {post.subSections.map((section, index) => {
+              const colorClass = section.color === "red" ? "color-red" :
+                                 section.color === "cyan" ? "color-cyan" :
+                                 section.color === "gold" ? "color-gold" : "";
 
-
+              return (
+                <div key={index} className="flex flex-col gap-4">
+                  {section.title && (
+                    <h2 className={`text-xl sm:text-3xl font-bold ${colorClass} transition-colors`}>
+                      {section.title}
+                    </h2>
+                  )}
+                  <div className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose text-slate-700 dark:text-slate-300">
+                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>{section.content}</ReactMarkdown>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {post.conclusion && (
