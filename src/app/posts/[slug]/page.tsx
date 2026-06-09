@@ -108,39 +108,18 @@ export default async function PostPage({
           width={1200}
           height={800}
           sizes="(max-width: 1024px) 100vw, 1200px"
-          className="object-contain w-full h-auto max-h-[85vh]"
+          className="object-contain w-full h-auto max-h-[50vh]"
           priority
         />
       </div>
 
       {/* Main Content Container */}
       <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
-        <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline prose-a:transition-colors max-w-none text-base sm:text-lg leading-relaxed mb-10">
+        <div className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose mb-10 text-slate-700 dark:text-slate-300">
           <ReactMarkdown>{post.bodyContent}</ReactMarkdown>
         </div>
 
-        {post.subSections && post.subSections.length > 0 && (
-          <div className="space-y-10 mb-10 border-t border-slate-100 dark:border-slate-700 pt-8 mt-8">
-            {post.subSections.map((section, index) => {
-              const colorClass = section.color === "red" ? "color-red" :
-                                 section.color === "cyan" ? "color-cyan" :
-                                 section.color === "gold" ? "color-gold" : "";
 
-              return (
-                <div key={index} className="flex flex-col gap-4">
-                  {section.title && (
-                    <h2 className={`text-xl sm:text-3xl font-bold ${colorClass} transition-colors`}>
-                      {section.title}
-                    </h2>
-                  )}
-                  <div className="prose prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-a:no-underline max-w-none text-base sm:text-lg leading-relaxed">
-                    <ReactMarkdown>{section.content}</ReactMarkdown>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
 
       {post.conclusion && (
@@ -152,17 +131,20 @@ export default async function PostPage({
       )}
 
       {post.links && post.links.length > 0 && (
-        <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10 space-y-6">
-          <h3 className="text-xl sm:text-2xl font-bold mb-4">روابط ذات صلة</h3>
-          <ul className="space-y-4">
+        <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700/50 rounded-2xl p-6 sm:p-8 mb-10">
+          <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 text-slate-800 dark:text-slate-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            مراجع ومصادر خارجية
+          </h3>
+          <ul className="space-y-3">
             {post.links.map((link, index) => (
-              <li key={index} className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary/70 shrink-0"></div>
+              <li key={index} className="flex items-start gap-3">
+                <div className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0"></div>
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80 font-medium text-base sm:text-lg transition-colors break-words"
+                  className="text-primary hover:text-primary/80 font-medium text-sm sm:text-base transition-colors break-words underline underline-offset-4 decoration-primary/30 hover:decoration-primary/80"
                 >
                   {link.title}
                 </a>
