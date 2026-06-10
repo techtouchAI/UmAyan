@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import type { CMSPost } from "@/lib/github";
 import { uploadGithubFile, fetchGithubSettings, encodeBase64Unicode } from "@/lib/github";
+import { fontOptions } from "@/lib/fonts";
 import type { PostLink } from "@/lib/types";
 import imageCompression from "browser-image-compression";
 
@@ -262,6 +263,30 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                 <option value="red">أحمر (#E0353E)</option>
                 <option value="cyan">سماوي تركواز (#3AD2D6)</option>
                 <option value="gold">ذهبي أصفر (#EDCF5F)</option>
+              </select>
+            </div>
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium mb-1">خط العنوان (Title Font)</label>
+              <select
+                value={post.titleFont || "Amiri"}
+                onChange={(e) => setPost({ ...post, titleFont: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
+              >
+                {fontOptions.map(font => (
+                  <option key={font} value={font}>{font}</option>
+                ))}
+              </select>
+            </div>
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium mb-1">خط المحتوى (Content Font)</label>
+              <select
+                value={post.contentFont || "Amiri"}
+                onChange={(e) => setPost({ ...post, contentFont: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-primary outline-none"
+              >
+                {fontOptions.map(font => (
+                  <option key={font} value={font}>{font}</option>
+                ))}
               </select>
             </div>
           </div>

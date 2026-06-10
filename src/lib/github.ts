@@ -88,6 +88,8 @@ export async function saveGithubPost(token: string, post: CMSPost): Promise<void
   const postData: Post = {
     title: post.title,
     titleColor: post.titleColor,
+    titleFont: post.titleFont,
+    contentFont: post.contentFont,
     slug: post.slug,
     portraitImage: post.portraitImage,
     category: post.category,
