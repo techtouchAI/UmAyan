@@ -1,10 +1,12 @@
 {
-  "portraitImage": "https://picsum.photos/seed/2/400/500",
   "title": "منشور تجريبي رقم 2 عن الصحة النفسية",
   "slug": "test-post-2",
-  "category": "depression",
+  "portraitImage": "https://picsum.photos/seed/2/400/500",
+  "category": "قلق",
   "bodyContent": "هذا محتوى المنشور التجريبي بصيغة نصية عادية حالياً، وسيتم تحويله إلى ماركداون.\n\n### عنوان فرعي\nيمكن كتابة المزيد من التفاصيل هنا.",
+  "subSections": [],
   "conclusion": "في الختام، الصحة النفسية هي الأساس لبناء حياة متوازنة وسعيدة.",
   "seoMetaTitle": "منشور تجريبي رقم 2",
-  "seoMetaDescription": "وصف موجز للمنشور التجريبي رقم 2 يظهر في محركات البحث."
+  "seoMetaDescription": "وصف موجز للمنشور التجريبي رقم 2 يظهر في محركات البحث.",
+  "links": []
 }
