@@ -17,20 +17,18 @@ interface EditorProps {
 }
 
 export default function Editor({ initialPost, onSave, onCancel, isSaving, token }: EditorProps) {
-  const [post, setPost] = useState<CMSPost>(initialPost);
+  const [post, setPost] = useState<CMSPost>({
+    ...initialPost,
+    links: initialPost.links || [],
+    subSections: initialPost.subSections || []
+  });
+  const [showMarkdownGuide, setShowMarkdownGuide] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [existingCategories, setExistingCategories] = useState<string[]>([]);
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
-  // Initialize links and subSections arrays if they don't exist
-  useEffect(() => {
-    setPost((prev) => ({
-      ...prev,
-      links: prev.links || [],
-      subSections: prev.subSections || []
-    }));
-  }, []);
+
 
   // Load existing categories from settings if possible, or provide defaults
   useEffect(() => {

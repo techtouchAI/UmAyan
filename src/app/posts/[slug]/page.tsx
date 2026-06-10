@@ -5,8 +5,7 @@ import Link from "next/link";
 import { ShareButtons } from "@/components/ui/ShareButtons";
 import { RelatedLinks } from "@/components/ui/RelatedLinks";
 import { Metadata } from "next";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
+import { ArticleContent } from "@/components/ui/ArticleContent";
 import { ArrowRight } from "lucide-react";
 import { fontsMap } from "@/lib/fonts";
 
@@ -65,7 +64,7 @@ export default async function PostPage({
   const resolvedParams = await params;
 
   let post;
-  let allPosts: Array<any> = [];
+  let allPosts: Array<import("@/lib/types").Post> = [];
   try {
     post = await getPostBySlug(resolvedParams.slug);
     allPosts = await getPosts();
@@ -82,7 +81,8 @@ export default async function PostPage({
 
   // Get up to 5 random posts for the bottom section
   const otherPosts = allPosts.filter(p => p.slug !== post.slug);
-  const randomPosts = [...otherPosts].sort(() => 0.5 - Math.random()).slice(0, 5);
+  // Fallback: Just take the first 5 other posts for static generation
+  const randomPosts = otherPosts.slice(0, 5);
 
   return (
     <article className="w-full relative">
@@ -119,54 +119,14 @@ export default async function PostPage({
         />
       </div>
 
-      {/* Main Content Container */}
-      <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
-        <div
-          className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-h1:text-3xl sm:prose-h1:text-4xl lg:prose-h1:text-5xl prose-h2:text-2xl sm:prose-h2:text-3xl lg:prose-h2:text-4xl prose-h3:text-xl sm:prose-h3:text-2xl lg:prose-h3:text-3xl prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose mb-10 text-slate-900 dark:text-white"
-          style={{ fontFamily: fontsMap[post.contentFont || 'Amiri'] }}
-        >
-          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{post.bodyContent}</ReactMarkdown>
-        </div>
-        {post.subSections && post.subSections.length > 0 && (
-          <div className="space-y-10 mb-10 border-t border-slate-100 dark:border-slate-700 pt-8 mt-8">
-            {post.subSections.map((section, index) => {
-              const colorClass = section.color === "red" ? "color-red" :
-                                 section.color === "cyan" ? "color-cyan" :
-                                 section.color === "gold" ? "color-gold" : "text-slate-900 dark:text-white";
-
-              return (
-                <div key={index} className="flex flex-col gap-4">
-                  {section.title && (
-                    <h2
-                      className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colorClass} transition-colors`}
-                      style={{ fontFamily: fontsMap[post.titleFont || 'Amiri'] }}
-                    >
-                      {section.title}
-                    </h2>
-                  )}
-                  <div
-                    className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-h1:text-3xl sm:prose-h1:text-4xl lg:prose-h1:text-5xl prose-h2:text-2xl sm:prose-h2:text-3xl lg:prose-h2:text-4xl prose-h3:text-xl sm:prose-h3:text-2xl lg:prose-h3:text-3xl prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose text-slate-900 dark:text-white"
-                    style={{ fontFamily: fontsMap[post.contentFont || 'Amiri'] }}
-                  >
-                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>{section.content}</ReactMarkdown>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {post.conclusion && (
-        <div
-          className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10"
-          style={{ fontFamily: fontsMap[post.contentFont || 'Amiri'] }}
-        >
-          <p className="text-slate-900 dark:text-white font-medium text-base sm:text-lg leading-relaxed">
-            {post.conclusion}
-          </p>
-        </div>
-      )}
+      {/* Interactive Main Content Container */}
+      <ArticleContent
+        contentFont={post.contentFont}
+        titleFont={post.titleFont}
+        bodyContent={post.bodyContent}
+        subSections={post.subSections}
+        conclusion={post.conclusion}
+      />
 
       {post.links && post.links.length > 0 && <RelatedLinks links={post.links} />}
 
