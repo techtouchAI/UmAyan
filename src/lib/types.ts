@@ -37,6 +37,8 @@ export interface Post {
   portraitImage: string;
   title: string;
   titleColor?: 'red' | 'cyan' | 'gold' | 'default';
+  titleFont?: string;
+  contentFont?: string;
   slug: string;
   category: string;
   bodyContent: string;

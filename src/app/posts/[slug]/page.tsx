@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { ArrowRight } from "lucide-react";
+import { fontsMap } from "@/lib/fonts";
 
 export async function generateStaticParams() {
   try {
@@ -97,7 +98,10 @@ export default async function PostPage({
 
       {/* Title Container */}
       <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-8 backdrop-blur-sm">
-        <h1 className={`text-center text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight ${post.titleColor === 'red' ? 'text-red-600 dark:text-red-400' : post.titleColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : post.titleColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-slate-100'}`}>
+        <h1
+          className={`text-center text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight ${post.titleColor === 'red' ? 'text-red-600 dark:text-red-400' : post.titleColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : post.titleColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-white'}`}
+          style={{ fontFamily: fontsMap[post.titleFont || 'Amiri'] }}
+        >
           {post.title}
         </h1>
       </div>
@@ -117,7 +121,10 @@ export default async function PostPage({
 
       {/* Main Content Container */}
       <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
-        <div className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose mb-10 text-slate-700 dark:text-slate-300">
+        <div
+          className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-h1:text-3xl sm:prose-h1:text-4xl lg:prose-h1:text-5xl prose-h2:text-2xl sm:prose-h2:text-3xl lg:prose-h2:text-4xl prose-h3:text-xl sm:prose-h3:text-2xl lg:prose-h3:text-3xl prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose mb-10 text-slate-900 dark:text-white"
+          style={{ fontFamily: fontsMap[post.contentFont || 'Amiri'] }}
+        >
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>{post.bodyContent}</ReactMarkdown>
         </div>
         {post.subSections && post.subSections.length > 0 && (
@@ -125,16 +132,22 @@ export default async function PostPage({
             {post.subSections.map((section, index) => {
               const colorClass = section.color === "red" ? "color-red" :
                                  section.color === "cyan" ? "color-cyan" :
-                                 section.color === "gold" ? "color-gold" : "";
+                                 section.color === "gold" ? "color-gold" : "text-slate-900 dark:text-white";
 
               return (
                 <div key={index} className="flex flex-col gap-4">
                   {section.title && (
-                    <h2 className={`text-xl sm:text-3xl font-bold ${colorClass} transition-colors`}>
+                    <h2
+                      className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colorClass} transition-colors`}
+                      style={{ fontFamily: fontsMap[post.titleFont || 'Amiri'] }}
+                    >
                       {section.title}
                     </h2>
                   )}
-                  <div className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose text-slate-700 dark:text-slate-300">
+                  <div
+                    className="prose prose-slate dark:prose-invert prose-p:leading-loose prose-p:mb-8 prose-headings:mb-6 prose-h1:text-3xl sm:prose-h1:text-4xl lg:prose-h1:text-5xl prose-h2:text-2xl sm:prose-h2:text-3xl lg:prose-h2:text-4xl prose-h3:text-xl sm:prose-h3:text-2xl lg:prose-h3:text-3xl prose-a:text-primary hover:prose-a:text-primary/80 prose-a:underline prose-a:underline-offset-4 prose-a:transition-colors max-w-none text-base sm:text-lg leading-loose text-slate-900 dark:text-white"
+                    style={{ fontFamily: fontsMap[post.contentFont || 'Amiri'] }}
+                  >
                     <ReactMarkdown rehypePlugins={[rehypeRaw]}>{section.content}</ReactMarkdown>
                   </div>
                 </div>
@@ -145,8 +158,11 @@ export default async function PostPage({
       </div>
 
       {post.conclusion && (
-        <div className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10">
-          <p className="text-slate-800 dark:text-slate-200 font-medium text-base sm:text-lg leading-relaxed">
+        <div
+          className="bg-white dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700/50 rounded-3xl p-6 sm:p-10 mb-10"
+          style={{ fontFamily: fontsMap[post.contentFont || 'Amiri'] }}
+        >
+          <p className="text-slate-900 dark:text-white font-medium text-base sm:text-lg leading-relaxed">
             {post.conclusion}
           </p>
         </div>
