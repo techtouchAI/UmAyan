@@ -2,7 +2,7 @@ export interface SiteSettings {
   coverImage?: string;
   profileImage: string;
   siteName: string;
-  siteNameColor?: 'red' | 'cyan' | 'gold' | 'default';
+  siteNameColor?: string;
   siteDescription: string;
   categories?: string[];
   floatingButton: {

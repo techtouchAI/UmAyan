@@ -45,8 +45,8 @@ export function Header({ settings }: HeaderProps) {
         <div className="flex flex-row items-start pb-2 pt-0 text-start">
           {/* Profile Image (Overlapping, on the right in RTL) */}
           <div className="-mt-10 sm:-mt-14 relative z-20 mb-0 ms-4 shrink-0">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-white dark:bg-[#0a0a0a] shadow-md">
-              <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-black shadow-md">
+              <div className="relative w-full h-full rounded-full overflow-hidden bg-black">
                 {settings.profileImage && (
                   <Image
                     src={settings.profileImage}
@@ -64,11 +64,14 @@ export function Header({ settings }: HeaderProps) {
           {/* Text Content */}
           <div className="flex-1 pt-2 w-full px-0">
             <Link href="/">
-              <h1 className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor === 'red' ? 'text-red-600 dark:text-red-400' : settings.siteNameColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : settings.siteNameColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-slate-100'}`}>
+              <h1
+                className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor && settings.siteNameColor !== 'default' && !['red', 'cyan', 'gold'].includes(settings.siteNameColor) ? '' : settings.siteNameColor === 'red' ? 'text-red-600 dark:text-red-400' : settings.siteNameColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : settings.siteNameColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-slate-100'}`}
+                style={settings.siteNameColor && settings.siteNameColor !== 'default' && !['red', 'cyan', 'gold'].includes(settings.siteNameColor) ? { color: settings.siteNameColor } : undefined}
+              >
                 {settings.siteName}
               </h1>
             </Link>
-            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm w-full">
+            <p className="text-slate-900 dark:text-slate-100 font-medium text-xs sm:text-sm w-full">
               {settings.siteDescription}
             </p>
           </div>
