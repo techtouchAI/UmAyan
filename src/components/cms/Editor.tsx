@@ -339,14 +339,36 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
           </div>
 
           <div className="md:col-span-2 relative">
-            <label className="block text-sm font-medium mb-1">محتوى المقال (Markdown)</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium">محتوى المقال (يدعم Markdown)</label>
+              <button
+                type="button"
+                onClick={() => setShowMarkdownGuide(!showMarkdownGuide)}
+                className="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-3 py-1.5 rounded transition-colors font-medium text-slate-700 dark:text-slate-200"
+              >
+                {showMarkdownGuide ? "إخفاء إرشادات Markdown" : "إرشادات تنسيق Markdown"}
+              </button>
+            </div>
+            {showMarkdownGuide && (
+              <div className="mb-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-4 text-sm text-blue-900 dark:text-blue-200 space-y-2">
+                <p className="font-bold mb-1">دليل سريع لتنسيق المارك داون:</p>
+                <ul className="list-disc list-outside ms-5 space-y-1">
+                  <li><strong># عنوان رئيسي</strong> (استخدم الهاشتاج قبل النص)</li>
+                  <li><strong>## عنوان فرعي</strong> (استخدم علامتي هاشتاج)</li>
+                  <li><strong>**نص عريض**</strong> (ضع النص بين نجمتين)</li>
+                  <li><strong>* قائمة نقطية</strong> (استخدم نجمة ثم مسافة)</li>
+                  <li><strong>[نص الرابط](رابط الموقع)</strong> (لإضافة رابط تشعبي)</li>
+                  <li><strong>&gt; نص اقتباس</strong> (لإضافة اقتباس مميز)</li>
+                </ul>
+              </div>
+            )}
             <textarea
               required
-              rows={6}
+              rows={10}
               value={post.bodyContent}
               onChange={(e) => setPost({ ...post, bodyContent: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
-              placeholder="شرح توضيحي للمارك داون:&#10;# لكتابة عنوان رئيسي استخدم الهاشتاج قبل النص (مثال: # عنوان رئيسي)&#10;## لكتابة عنوان فرعي استخدم علامتي هاشتاج (مثال: ## عنوان فرعي)&#10;** لجعل النص عريضاً ضعه بين نجمتين (مثال: **نص مهم جداً**)&#10;* لإنشاء قائمة نقطية استخدم نجمة ثم مسافة (مثال: * النقطة الأولى)&#10;[نص الرابط](رابط الموقع) لإضافة رابط تشعبي&#10;> لإضافة اقتباس مميز"
+              placeholder="اكتب محتوى المقال هنا..."
               dir="auto"
             />
           </div>
@@ -408,7 +430,7 @@ export default function Editor({ initialPost, onSave, onCancel, isSaving, token 
                      value={section.content}
                      onChange={(e) => updateSubSection(index, "content", e.target.value)}
                      className="w-full px-3 py-2 border rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 font-mono text-sm focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
-                     placeholder="استخدم أوامر المارك داون هنا أيضاً...&#10;**نص عريض**، * قائمة، # عنوان"
+                     placeholder="محتوى القسم الفرعي..."
                      dir="auto"
                    />
                 </div>
