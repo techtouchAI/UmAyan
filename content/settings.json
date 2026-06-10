@@ -20,5 +20,6 @@
     }
   ],
   "coverImage": "https://raw.githubusercontent.com/techtouchAI/UmAyan/Main/public/uploads/cover-1780965352208.webp",
-  "siteNameColor": "cyan"
+  "siteNameColor": "#000000",
+  "headerBackgroundColor": "#00ffff"
 }
