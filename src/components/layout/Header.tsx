@@ -44,18 +44,18 @@ export function Header({ settings }: HeaderProps) {
       </div>
 
       {/* Profile Info Container */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-row items-start pb-2 pt-0 text-start">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 h-auto pb-4">
+        <div className="flex flex-row items-start pt-0 text-start">
           {/* Profile Image (Overlapping, on the right in RTL) */}
-          <div className="-mt-10 sm:-mt-14 relative z-20 mb-0 ms-4 shrink-0">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#0a0a0a] bg-black shadow-md">
+          <div className="-mt-6 sm:-mt-8 relative z-20 mb-0 ms-4 shrink-0">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-white dark:border-[#0a0a0a] bg-black shadow-md">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-black">
                 {settings.profileImage && (
                   <Image
                     src={settings.profileImage}
                     alt={settings.siteName || "الصورة الشخصية"}
                     fill
-                    sizes="(max-width: 640px) 80px, 128px"
+                    sizes="(max-width: 640px) 48px, 64px"
                     className="object-cover"
                     priority
                   />
@@ -74,7 +74,10 @@ export function Header({ settings }: HeaderProps) {
                 {settings.siteName}
               </h1>
             </Link>
-            <p className={`font-medium text-xs sm:text-sm w-full ${settings.headerBackgroundColor && settings.headerBackgroundColor !== 'default' && settings.headerBackgroundColor !== 'black' && settings.headerBackgroundColor !== '#ffffff' ? 'text-slate-200' : 'text-slate-900 dark:text-slate-100'}`}>
+            <p
+              className={`font-medium text-xs sm:text-sm w-full ${settings.siteDescriptionColor && settings.siteDescriptionColor !== 'default' ? '' : settings.headerBackgroundColor && settings.headerBackgroundColor !== 'default' && settings.headerBackgroundColor !== 'black' && settings.headerBackgroundColor !== '#ffffff' ? 'text-slate-200' : 'text-slate-900 dark:text-slate-100'}`}
+              style={settings.siteDescriptionColor && settings.siteDescriptionColor !== 'default' ? { color: settings.siteDescriptionColor } : undefined}
+            >
               {settings.siteDescription}
             </p>
           </div>

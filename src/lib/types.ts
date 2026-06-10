@@ -5,6 +5,7 @@ export interface SiteSettings {
   siteNameColor?: string;
   headerBackgroundColor?: string;
   siteDescription: string;
+  siteDescriptionColor?: string;
   categories?: string[];
   floatingButton: {
     iconType: string;

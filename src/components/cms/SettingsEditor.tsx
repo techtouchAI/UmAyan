@@ -25,25 +25,20 @@ const defaultSettings: SiteSettings = {
 };
 
 export default function SettingsEditor({ initialSettings, onSave, token }: SettingsEditorProps) {
-  const [settings, setSettings] = useState<SiteSettings>(initialSettings || defaultSettings);
+  const [settings, setSettings] = useState<SiteSettings>(initialSettings ? {
+    ...defaultSettings,
+    ...initialSettings,
+    floatingButton: {
+      ...defaultSettings.floatingButton,
+      ...(initialSettings.floatingButton || {})
+    },
+    socialLinks: initialSettings.socialLinks || defaultSettings.socialLinks
+  } : defaultSettings);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingCover, setIsUploadingCover] = useState(false);
   const [isUploadingProfile, setIsUploadingProfile] = useState(false);
 
-  useEffect(() => {
-    if (initialSettings) {
-      // Deep merge to ensure nested objects like floatingButton and socialLinks exist
-      setSettings({
-        ...defaultSettings,
-        ...initialSettings,
-        floatingButton: {
-          ...defaultSettings.floatingButton,
-          ...(initialSettings.floatingButton || {})
-        },
-        socialLinks: initialSettings.socialLinks || defaultSettings.socialLinks
-      });
-    }
-  }, [initialSettings]);
+
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "cover" | "profile") => {
     const file = e.target.files?.[0];
@@ -241,7 +236,31 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">وصف الموقع</label>
+          <div className="flex justify-between items-end mb-1">
+            <label className="block text-sm font-medium">وصف الموقع</label>
+            <div className="flex items-center gap-2">
+              <label className="text-xs font-medium text-slate-500">لون الوصف:</label>
+              <div className="flex gap-1 items-center">
+                <input
+                  type="color"
+                  value={
+                    settings.siteDescriptionColor && !['default'].includes(settings.siteDescriptionColor)
+                    ? settings.siteDescriptionColor
+                    : '#000000'
+                  }
+                  onChange={(e) => setSettings({...settings, siteDescriptionColor: e.target.value})}
+                  className="w-6 h-6 p-0 border-0 rounded cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={settings.siteDescriptionColor || "default"}
+                  onChange={(e) => setSettings({...settings, siteDescriptionColor: e.target.value})}
+                  className="w-20 px-2 py-0.5 text-xs rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 outline-none"
+                  placeholder="#000000"
+                />
+              </div>
+            </div>
+          </div>
           <textarea
             value={settings.siteDescription}
             onChange={(e) => setSettings({...settings, siteDescription: e.target.value})}
