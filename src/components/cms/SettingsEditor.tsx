@@ -196,16 +196,25 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
           </div>
           <div className="md:col-span-1">
             <label className="block text-sm font-medium mb-1">لون الاسم</label>
-            <select
-              value={settings.siteNameColor || "default"}
-              onChange={(e) => setSettings({...settings, siteNameColor: e.target.value as any})}
-              className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-            >
-              <option value="default">الافتراضي</option>
-              <option value="red">أحمر (#E0353E)</option>
-              <option value="cyan">سماوي تركواز (#3AD2D6)</option>
-              <option value="gold">ذهبي أصفر (#EDCF5F)</option>
-            </select>
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={
+                  settings.siteNameColor && !['default', 'red', 'cyan', 'gold'].includes(settings.siteNameColor)
+                  ? settings.siteNameColor
+                  : settings.siteNameColor === 'red' ? '#E0353E' : settings.siteNameColor === 'cyan' ? '#3AD2D6' : settings.siteNameColor === 'gold' ? '#EDCF5F' : '#000000'
+                }
+                onChange={(e) => setSettings({...settings, siteNameColor: e.target.value})}
+                className="w-10 h-10 p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={settings.siteNameColor || "default"}
+                onChange={(e) => setSettings({...settings, siteNameColor: e.target.value})}
+                className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                placeholder="#000000 أو رمز اللون"
+              />
+            </div>
           </div>
         </div>
 

@@ -32,7 +32,17 @@ export function HomePageClient({ categories, initialPosts }: HomePageClientProps
     return initialPosts.filter((post) => {
       const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             JSON.stringify(post.bodyContent).toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
+
+      // Fix: decode the selectedCategory to match the raw post.category safely.
+      let decodedSelectedCategory = selectedCategory;
+      try {
+        decodedSelectedCategory = decodeURIComponent(selectedCategory);
+      } catch (e) {
+        // Fallback in case of malformed URI
+      }
+
+      const matchesCategory = selectedCategory === "all" ||
+                              post.category.trim().toLowerCase() === decodedSelectedCategory.trim().toLowerCase();
 
       return matchesSearch && matchesCategory;
     });
@@ -60,7 +70,7 @@ export function HomePageClient({ categories, initialPosts }: HomePageClientProps
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+        <div className="text-center py-12 text-slate-900 dark:text-slate-100 font-medium">
           لا توجد منشورات تطابق بحثك.
         </div>
       )}
@@ -70,17 +80,17 @@ export function HomePageClient({ categories, initialPosts }: HomePageClientProps
           <button
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className="px-4 py-2 rounded-md border border-slate-200 dark:border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            className="px-4 py-2 rounded-md border border-slate-200 dark:border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-slate-100 font-medium"
           >
             السابق
           </button>
-          <span className="flex items-center text-sm text-slate-500 dark:text-slate-400">
+          <span className="flex items-center text-sm text-slate-900 dark:text-slate-100 font-medium">
             صفحة {currentPage} من {totalPages}
           </span>
           <button
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 rounded-md border border-slate-200 dark:border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            className="px-4 py-2 rounded-md border border-slate-200 dark:border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-slate-100 font-medium"
           >
             التالي
           </button>
