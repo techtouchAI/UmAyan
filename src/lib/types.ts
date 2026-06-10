@@ -3,6 +3,7 @@ export interface SiteSettings {
   profileImage: string;
   siteName: string;
   siteNameColor?: string;
+  headerBackgroundColor?: string;
   siteDescription: string;
   categories?: string[];
   floatingButton: {

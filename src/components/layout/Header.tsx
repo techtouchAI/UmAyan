@@ -11,7 +11,10 @@ interface HeaderProps {
 
 export function Header({ settings }: HeaderProps) {
   return (
-    <header className="w-full border-b border-slate-100 dark:border-slate-800 relative bg-white dark:bg-[#0a0a0a]">
+    <header
+      className={`w-full border-b border-slate-100 dark:border-slate-800 relative ${settings.headerBackgroundColor && settings.headerBackgroundColor !== 'default' && settings.headerBackgroundColor !== 'black' ? '' : 'bg-white dark:bg-[#0a0a0a]'}`}
+      style={settings.headerBackgroundColor && settings.headerBackgroundColor !== 'default' && settings.headerBackgroundColor !== 'black' ? { backgroundColor: settings.headerBackgroundColor } : undefined}
+    >
       {/* Cover Image */}
       <div className="relative w-full h-24 md:h-32 bg-slate-200 dark:bg-slate-800">
         {settings.coverImage ? (
@@ -65,13 +68,13 @@ export function Header({ settings }: HeaderProps) {
           <div className="flex-1 pt-2 w-full px-0">
             <Link href="/">
               <h1
-                className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor && settings.siteNameColor !== 'default' && !['red', 'cyan', 'gold'].includes(settings.siteNameColor) ? '' : settings.siteNameColor === 'red' ? 'text-red-600 dark:text-red-400' : settings.siteNameColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : settings.siteNameColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-900 dark:text-slate-100'}`}
+                className={`text-xl sm:text-2xl font-bold hover:opacity-80 transition-opacity mb-1 cursor-pointer ${settings.siteNameColor && settings.siteNameColor !== 'default' && !['red', 'cyan', 'gold'].includes(settings.siteNameColor) ? '' : settings.siteNameColor === 'red' ? 'text-red-600 dark:text-red-400' : settings.siteNameColor === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : settings.siteNameColor === 'gold' ? 'text-amber-600 dark:text-amber-400' : settings.headerBackgroundColor && settings.headerBackgroundColor !== 'default' && settings.headerBackgroundColor !== 'black' && settings.headerBackgroundColor !== '#ffffff' ? 'text-white' : 'text-slate-900 dark:text-slate-100'}`}
                 style={settings.siteNameColor && settings.siteNameColor !== 'default' && !['red', 'cyan', 'gold'].includes(settings.siteNameColor) ? { color: settings.siteNameColor } : undefined}
               >
                 {settings.siteName}
               </h1>
             </Link>
-            <p className="text-slate-900 dark:text-slate-100 font-medium text-xs sm:text-sm w-full">
+            <p className={`font-medium text-xs sm:text-sm w-full ${settings.headerBackgroundColor && settings.headerBackgroundColor !== 'default' && settings.headerBackgroundColor !== 'black' && settings.headerBackgroundColor !== '#ffffff' ? 'text-slate-200' : 'text-slate-900 dark:text-slate-100'}`}>
               {settings.siteDescription}
             </p>
           </div>

@@ -183,7 +183,7 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
         <h3 className="text-xl font-semibold">معلومات الموقع</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="md:col-span-3">
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium mb-1">اسم الموقع</label>
             <input
               type="text"
@@ -213,6 +213,28 @@ export default function SettingsEditor({ initialSettings, onSave, token }: Setti
                 onChange={(e) => setSettings({...settings, siteNameColor: e.target.value})}
                 className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="#000000 أو رمز اللون"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-1">
+            <label className="block text-sm font-medium mb-1">لون الخلفية الكبيرة</label>
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={
+                  settings.headerBackgroundColor && !['default', 'black'].includes(settings.headerBackgroundColor)
+                  ? settings.headerBackgroundColor
+                  : settings.headerBackgroundColor === 'black' ? '#0a0a0a' : '#0a0a0a'
+                }
+                onChange={(e) => setSettings({...settings, headerBackgroundColor: e.target.value})}
+                className="w-10 h-10 p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={settings.headerBackgroundColor || "default"}
+                onChange={(e) => setSettings({...settings, headerBackgroundColor: e.target.value})}
+                className="w-full px-4 py-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                placeholder="#0a0a0a أو رمز اللون"
               />
             </div>
           </div>
