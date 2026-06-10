@@ -25,7 +25,7 @@ export function CategoryTabs({ categories, selectedCategory, onSelectCategory }:
               "px-4 py-2 rounded-full text-sm font-medium transition-colors",
               selectedCategory === category.slug
                 ? "bg-primary text-white dark:bg-primary/90"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                : "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
             )}
           >
             {category.title}

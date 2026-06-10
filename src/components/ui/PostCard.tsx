@@ -22,7 +22,7 @@ export function PostCard({ post }: PostCardProps) {
           />
         </div>
         <div className="p-4 flex-grow flex flex-col justify-between">
-          <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 line-clamp-2">
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white line-clamp-2">
             {post.title}
           </h3>
           <span className="inline-block mt-2 text-sm text-primary dark:text-primary font-medium">

@@ -28,14 +28,14 @@ export function Footer({ settings }: FooterProps) {
             href={social.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-primary hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-primary transition-colors"
+            className="p-2 rounded-full bg-slate-100 text-slate-900 hover:bg-primary hover:text-white dark:bg-slate-800 dark:text-white dark:hover:bg-primary transition-colors"
             aria-label={social.platformName}
           >
             {iconMap[social.icon.toLowerCase()] || <LinkIcon className="w-5 h-5" />}
           </a>
         ))}
       </div>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
+      <p className="text-sm text-slate-900 dark:text-white font-medium">
         &copy; {currentYear} {settings.siteName}. جميع الحقوق محفوظة.
       </p>
     </footer>
