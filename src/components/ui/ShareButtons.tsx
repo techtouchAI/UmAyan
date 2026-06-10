@@ -24,7 +24,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-4 py-6 border-t border-slate-100 dark:border-slate-800">
-      <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300 font-medium">
+      <span className="flex items-center gap-2 text-slate-900 dark:text-white font-medium">
         <Share2 className="w-5 h-5" />
         شارك المقال:
       </span>
@@ -33,7 +33,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
           href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-blue-600 transition-colors"
+          className="p-2 rounded-full bg-slate-100 text-slate-900 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:text-white dark:hover:bg-blue-600 transition-colors"
           aria-label="Share on Facebook"
         >
           <Facebook className="w-5 h-5" />
@@ -42,7 +42,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
           href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-sky-500 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-sky-500 transition-colors"
+          className="p-2 rounded-full bg-slate-100 text-slate-900 hover:bg-sky-500 hover:text-white dark:bg-slate-800 dark:text-white dark:hover:bg-sky-500 transition-colors"
           aria-label="Share on Twitter"
         >
           <Twitter className="w-5 h-5" />
@@ -51,7 +51,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
           href={`https://wa.me/?text=${encodedTitle} ${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-green-500 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-green-500 transition-colors"
+          className="p-2 rounded-full bg-slate-100 text-slate-900 hover:bg-green-500 hover:text-white dark:bg-slate-800 dark:text-white dark:hover:bg-green-500 transition-colors"
           aria-label="Share on WhatsApp"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
@@ -60,7 +60,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
         </a>
         <button
           onClick={handleCopyLink}
-          className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-700 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-600 transition-colors"
+          className="p-2 rounded-full bg-slate-100 text-slate-900 hover:bg-slate-700 hover:text-white dark:bg-slate-800 dark:text-white dark:hover:bg-slate-600 transition-colors"
           aria-label="Copy Link"
         >
           <LinkIcon className="w-5 h-5" />

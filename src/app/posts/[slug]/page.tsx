@@ -89,7 +89,7 @@ export default async function PostPage({
       <div className="mb-6 inline-flex">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors font-medium bg-slate-100 dark:bg-slate-800/50 py-2 px-4 rounded-full"
+          className="inline-flex items-center gap-2 text-slate-900 hover:text-primary dark:text-white dark:hover:text-primary transition-colors font-medium bg-slate-100 dark:bg-slate-800/50 py-2 px-4 rounded-full"
         >
           <ArrowRight className="w-4 h-4" />
           <span>رجوع</span>
@@ -191,7 +191,7 @@ export default async function PostPage({
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <h4 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+                <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                   {rp.title}
                 </h4>
               </Link>
